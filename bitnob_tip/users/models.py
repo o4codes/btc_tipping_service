@@ -58,12 +58,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['phone']
     
     
-    def __str__(self): # provides a string representation of the object
+    def __str__(self):
+        """ Returns email as string representation of the User object
+        """
         return self.email
     
     def get_full_name(self):
-        """
-        Returns the first_name plus the last_name, with a space in between.
+        """Returns the first_name plus the last_name, with a space in between.
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
@@ -72,7 +73,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.first_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        '''
-        Sends an email to this User.
-        '''
+        """Sends an email to this User.
+        """
         send_mail(subject, message, from_email, [self.email], **kwargs)
