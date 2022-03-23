@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from utils.bitnob_handler import BitnobHandler
 import phonenumbers
 
 
@@ -13,9 +14,23 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, data):
         country_code = data.get('country_code')
         phone = data.get('phone')
-        if phonenumbers.is_valid_number(phonenumbers.parse(phone, country_code)):
+        phone = phone if phone[0] != '0' else phone[1:]
+        full_phone_number = f"{country_code}{phone}"
+        if phonenumbers.is_valid_number(phonenumbers.parse(full_phone_number)):
             return data
         raise serializers.ValidationError('Invalid country code')
     
     def create(self, validated_data):
-        pass
+        
+        # create user as bitnob customer
+        bitnob_response = BitnobHandler().create_customer(
+            firstName=validated_data.get('first_name'),
+            lastName=validated_data.get('last_name'),
+            phone=validated_data.get('phone'),
+            countryCode=validated_data.get('country_code'),
+            email=validated_data.get('email')
+        )
+        
+        validated_data['bitnob_id'] = bitnob_response['id']
+        user = get_user_model().objects.create_user(**validated_data)
+        return user

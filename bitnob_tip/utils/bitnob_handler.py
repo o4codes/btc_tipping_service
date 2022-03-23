@@ -1,15 +1,5 @@
 import requests
-from pydantic import BaseModel
 from decouple import config
-
-class BitnobCustomer(BaseModel):
-    """ Serves as schema for customer data """
-    id: str = None
-    first_name: str
-    last_name: str
-    email: str
-    phone: str
-    country_code: str
 
 class BitnobHandler:
     """ class handles all requests to the Bitnob API
@@ -21,14 +11,32 @@ class BitnobHandler:
         self.__secret_key = config('BITNOB_SECRET_KEY')
         self.__public_key = config('BITNOB_PUBLIC_KEY')
         
-    def create_customer(self, customer_data: BitnobCustomer) -> dict:
+    def create_customer(self, **customer_data) -> dict:
         """ creates a customer in Bitnob
         
         Args:
-            customer_data (BitnobCustomer): customer data
+            customer_data (dict): customer data to be created in Bitnob
+            sample_data: {
+                'firstName': 'John',
+                'lastName': 'Doe',
+                'email': 'johndoe@mail.com',
+                'phone': '1234567890',
+                'countryCode': '+234'
+            }
         
         Returns:
             dict: response from Bitnob
+            sample_data: {
+                "firstName": "Gabby",
+                "lastName": "Precious",
+                "email": "gabby@bitnob.com",
+                "phone": "9021534385",
+                "countryCode": "+234",
+                "blacklist": false,
+                "id": "1e258349-2043-4ca1-b39c-8418f9e0d36d",
+                "createdAt": "2021-08-26T11:15:23.788Z",
+                "updatedAt": "2021-08-26T11:15:23.788Z"
+            }
             
         Raises:
             Exception: if request fails
@@ -41,9 +49,6 @@ class BitnobHandler:
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        
-        customer_data = customer_data.dict()
-        customer_data['country_code'] = customer_data['country_code'].replace('+', '')
         response = requests.post(url, json=customer_data, headers=headers)
         
         if response.status_code == 200:
