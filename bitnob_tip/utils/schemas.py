@@ -7,6 +7,12 @@ class PaymentPriority(str, Enum):
     REGULAR = "regular"
     HIGH = "high"
 
+class PaymentStatus(str, Enum):
+    """Enum choices for payment status"""
+
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 class BitnobCustomer:
     """Schema for customer data"""
@@ -39,26 +45,44 @@ class BtcOnChainPayment:
         self,
         btc_amount: float,
         address: str,
-        customerEmail: str,
+        customer_email: str,
         description: str,
+        id : str = None,
+        status: PaymentStatus = None,
         priorityLevel: PaymentPriority = PaymentPriority.REGULAR,
     ):  
-        self.__btc_amount = btc_amount
         self.__address = address
-        self.__customerEmail = customerEmail
+        self.__customerEmail = customer_email
         self.__description = description
         self.__priorityLevel = priorityLevel
+        self.__satoshis = btc_amount * 100000000
+        self.__status = status
+        self.__id = id
 
     def to_reqeust_payload(self) -> dict:
         """Return dict representation of onchain btc payment
         """
         return {
-            "satoshis": self.__btc_amount * 100000000,
+            "satoshis": self.__satoshis,
             "address": self.__address,
             "customerEmail": self.__customerEmail,
             "description": self.__description,
             "priorityLevel": self.__priorityLevel,
         }
+        
+    def to_response_payload(self ) -> None:
+        """Return a response dict structure for onchain btc payment
+        """
+        return {
+            "id": self.__id,
+            "status": self.__status,
+            "satoshis": self.__satoshis,
+            "address": self.__address,
+            "customerEmail": self.__customerEmail,
+            "description": self.__description,
+            "priorityLevel": self.__priorityLevel,
+        }
+        
 
 class BtcLightningPayment:
     """Schema for lightning btc payment
@@ -72,16 +96,17 @@ class BtcLightningPayment:
         customer_email: str,
     ):
         
-        self.__btc_amount = btc_amount
         self.__lnAddress = lnAddress
         self.__reference = reference
         self.__customer_email = customer_email
-        
+        self.__satoshis = btc_amount * 100000000
+    
+    
     def to_request_payload(self) -> dict:
         """ Return dict representation of lightning btc payment
         """
         return {
-            "satoshis": self.__btc_amount * 100000000,
+            "satoshis": self.__satoshis,
             "lnAddress": self.__lnAddress,
             "reference": self.__reference,
             "customerEmail": self.__customer_email,

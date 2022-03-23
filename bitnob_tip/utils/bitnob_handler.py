@@ -75,6 +75,7 @@ class BitnobHandler:
         except (HTTPError, ConnectionError) as e:
             raise Exception(f"Error creating customer: {e}")
 
+
     def send_onchain_btc(self, payment_request: BtcOnChainPayment) -> dict:
         """sends onchain btc payment to Bitnob
 
@@ -108,11 +109,21 @@ class BitnobHandler:
             response = requests.post(url, json=data, headers=headers)
 
             if response.status_code == 200:
-                return response.json()["data"]
+                response_data = response.json()["data"]
+                
+                return  BtcOnChainPayment(
+                    id=response_data["id"],
+                    address = data['address'],
+                    btc_amount=response_data['btcAmount'],
+                    customer_email=data['customerEmail'],
+                    description=data['description'],
+                    status=response_data['status'],
+                ).to_response_payload()
 
             raise Exception(f"Payment Failed: {response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
             raise Exception(f"Error sending onchain btc: {e}")
+
 
     def decode_lightning_address(self, ln_address: str):
         """Decodes a lightning address
@@ -198,4 +209,4 @@ class BitnobHandler:
                 raise Exception(f"Payment Failed: {response.json()['message']}")
             except (HTTPError, ConnectionError) as e:
                 raise Exception(f"Error sending lightning payment: {e}")
-        raise Exception(f"Payment Failed: Amount to send is not within sendable range")
+        raise Exception("BTC Amount to send is not within sendable range")
