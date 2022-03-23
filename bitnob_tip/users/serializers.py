@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from utils.bitnob_handler import BitnobHandler
 import phonenumbers
 
+from utils.bitnob_handler import BitnobHandler
+from utils.schemas import BitnobCustomer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,13 +24,15 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         
         # create user as bitnob customer
-        bitnob_response = BitnobHandler().create_customer(
+        customer = BitnobCustomer(
             firstName=validated_data.get('first_name'),
             lastName=validated_data.get('last_name'),
             phone=validated_data.get('phone'),
             countryCode=validated_data.get('country_code'),
             email=validated_data.get('email')
         )
+        
+        bitnob_response = BitnobHandler().create_customer(customer)
         
         validated_data['bitnob_id'] = bitnob_response['id']
         user = get_user_model().objects.create_user(**validated_data)
