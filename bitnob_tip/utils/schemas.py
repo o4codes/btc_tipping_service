@@ -61,7 +61,8 @@ class BtcOnChainPayment:
         }
 
 class BtcLightningPayment:
-    """Schema for lightning btc payment"""
+    """Schema for lightning btc payment
+    """
 
     def __init__(
         self,
@@ -70,6 +71,7 @@ class BtcLightningPayment:
         reference: str,
         customer_email: str,
     ):
+        
         self.__btc_amount = btc_amount
         self.__lnAddress = lnAddress
         self.__reference = reference
@@ -84,4 +86,5 @@ class BtcLightningPayment:
             "reference": self.__reference,
             "customerEmail": self.__customer_email,
         }
+    
        
