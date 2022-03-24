@@ -3,12 +3,15 @@ from .views import (
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
     verify_lightening_address,
+    verify_btc_onchain_address,
     LighteningTransactionViews
     )
 
 urlpatterns = [
     path(
-        "on-chain/tips/", OnChainTransactionViews.as_view(), name="onchain-create-list"
+        "on-chain/tips/", 
+        OnChainTransactionViews.as_view(), 
+        name="onchain-create-list"
     ),
     path(
         "on-chain/tips/<str:sec_id>/",
@@ -17,7 +20,13 @@ urlpatterns = [
     ),
     
     path(
-        "lnAddress/verify/<str:address>/", 
+        'btc-onchain/verify/<str:address>/',
+        verify_btc_onchain_address,
+        name="verify-btc-onchain-address"
+    ),
+    
+    path(
+        "btc-lnAddress/verify/<str:address>/", 
         verify_lightening_address, 
         name="verify-lightening-address"),
     

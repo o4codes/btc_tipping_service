@@ -80,21 +80,6 @@ class OnChainTransactionDetailView(APIView):
             return Response(
                 schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
             )
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated,])
-def verify_lightening_address(request, address):
-    try:
-        bitnob_lightening = BtcLighteningHandler()
-        response = bitnob_lightening.decode_lightning_address(address)
-        return Response(
-            schemas.ResponseData.success(response), status=status.HTTP_200_OK
-        )
-    except Exception as e:
-        return Response(
-            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
-        )
         
         
 class LighteningTransactionViews(APIView):
@@ -129,3 +114,35 @@ class LighteningTransactionViews(APIView):
             return Response(
                 schemas.ResponseData.success([]), status=status.HTTP_200_OK
             )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def verify_btc_onchain_address(request, address):
+    """
+    Verify a bitcoin address.
+    """
+    try:
+        onchain_handler = BtcOnChainHandler()
+        response = onchain_handler.verify_address(address)
+        return Response(
+            schemas.ResponseData.success({"message":"Address is valid"}), status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
+        )
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated,])
+def verify_lightening_address(request, address):
+    try:
+        bitnob_lightening = BtcLighteningHandler()
+        response = bitnob_lightening.decode_lightning_address(address)
+        return Response(
+            schemas.ResponseData.success(response), status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
+        )

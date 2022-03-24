@@ -21,7 +21,7 @@ class BtcOnChainHandler:
     def verify_address(self, address):
         url = f"{self.__base_url}{self.__verify_btc_onchain}/{address}"
         response = requests.request("GET", url, headers=self.__headers)
-        if response.status_code == 200 and response.json().get("data").get("isValid"):
+        if response.status_code == 200 and response.json().get("data").get("isvalid"):
             return True
         raise Exception("Invalid Address")
     

@@ -4,7 +4,8 @@ from decouple import config
 import requests
 
 class BitnobCustomerHandler:
-    """class handles all requests to the Bitnob API"""
+    """class handles all requests to the Bitnob CustomerAPI
+    """
 
     def __init__(self) -> None:
         self.__base_url = "https://sandboxapi.bitnob.co"

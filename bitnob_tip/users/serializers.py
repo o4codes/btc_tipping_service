@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 import phonenumbers
 
-from utils.bitnob_handler import BitnobHandler
+from utils.bitnob_customer_handler import BitnobCustomerHandler
 from utils.schemas import BitnobCustomer
 
 
@@ -44,7 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         try:
-            bitnob_response = BitnobHandler().create_customer(customer)
+            bitnob_response = BitnobCustomerHandler().create_customer(customer)
 
             validated_data["bitnob_id"] = bitnob_response["id"]
             user = get_user_model().objects.create_user(**validated_data)
