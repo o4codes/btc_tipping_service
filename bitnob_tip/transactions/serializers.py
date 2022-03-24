@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from utils.bitnob_handler import BitnobHandler
+from utils.bitnob_handler import BtcOnChainHandler
 from utils import schemas
 
 from .models import OnChainTransaction, LightningTransaction
@@ -49,8 +49,8 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
         )
 
         try:
-            bitnob_handler = BitnobHandler()
-            response = bitnob_handler.send_onchain_btc(
+            onchain_handler = BtcOnChainHandler()
+            response = onchain_handler.send_onchain_btc(
                 payment_object
             )  # perform on-chain payment
 
@@ -79,6 +79,7 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True, source="sec_id")
     
     class Meta:
+        model = LightningTransaction
         fields = (
             "id",
             "btc",
@@ -117,5 +118,10 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         try:
             bitnob_handler = BitnobHandler()
             response = bitnob_handler.send_lightning_payment(payment_object)
+            print(response)
+            
+            lightening_transaction = LightningTransaction.objects.create(
+                btc = validated_data["btc"],
+            )
         except Exception as e:
             pass

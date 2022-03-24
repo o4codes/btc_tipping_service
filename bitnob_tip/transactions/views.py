@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
-from .serializers import OnChainTransactionSerializer
-from .models import OnChainTransaction
+from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer
+from .models import OnChainTransaction, LightningTransaction
 from utils import schemas
 from utils.bitnob_handler import BitnobHandler
 
@@ -81,7 +81,7 @@ class OnChainTransactionDetailView(APIView):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,])
 def verify_lightening_address(request, address):
     try:
         bitnob_handler = BitnobHandler()
@@ -93,3 +93,36 @@ def verify_lightening_address(request, address):
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
         )
+        
+class LighteningTransactionViews(APIView):
+    queryset = OnChainTransaction.objects.all()
+    serializer_class = LightningTransactionSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        serializer = LightningTransactionSerializer(
+            data=request.data, context={"request": request}
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                schemas.ResponseData.success(serializer.data),
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            schemas.ResponseData.error(serializer.errors),
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    def get(self, request, format=None):
+        try:
+            transactions = LightningTransaction.objects.get(sender=request.user)
+            serializer = LightningTransactionSerializer(transactions, many=True)
+                
+            return Response(
+                schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
+            )
+        except LightningTransaction.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.success([]), status=status.HTTP_200_OK
+            )

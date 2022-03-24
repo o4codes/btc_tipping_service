@@ -2,7 +2,8 @@ from django.urls import path, include
 from .views import (
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
-    verify_lightening_address
+    verify_lightening_address,
+    LighteningTransactionViews
     )
 
 urlpatterns = [
@@ -19,4 +20,10 @@ urlpatterns = [
         "lnAddress/verify/<str:address>/", 
         verify_lightening_address, 
         name="verify-lightening-address"),
+    
+    path(
+        "lightening/tips/",
+        LighteningTransactionViews.as_view(),
+        name = "lightening-create-list"
+    )
 ]
