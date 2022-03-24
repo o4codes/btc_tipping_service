@@ -19,6 +19,7 @@ class BitnobHandler:
         self.__onchain_btc_endpoint = "/api/v1/wallets/send_bitcoin"
         self.__lightining_endpoint = "/api/v1/lnurl/paylnaddress"
         self.__lightining_address = "/api/v1/lnurl/decodelnaddress"
+        self.__transactions_endpoint = "/api/v1/transactions"
         self.__secret_key = config("BITNOB_SECRET_KEY")
         self.__public_key = config("BITNOB_PUBLIC_KEY")
 
@@ -215,3 +216,48 @@ class BitnobHandler:
             except (HTTPError, ConnectionError) as e:
                 raise Exception(f"Error sending lightning payment: {e}")
         raise Exception("BTC Amount to send is not within sendable range")
+
+
+    def get_transaction_status(self, transaction_id: str) -> dict:
+        """gets transaction status from Bitnob
+
+        Args:
+            transaction_id (str): transaction id to be checked
+        
+        Returns (dict): response from Bitnob
+            Sample data: {
+                "id": "1e258349-2043-4ca1-b39c-8418f9e0d36d",
+                "status": "pending",
+                "address": "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX",
+                "btc": 0.00011,
+                "customer_email": "mail@mail.com
+            }
+            
+        Raises:
+            Exception: if request fails
+            Exception: if trasnation is not found
+        """
+        
+        url = f"{self.__base_url}{self.__transactions_endpoint}/{transaction_id}"
+
+        headers = {
+            "Authorization": f"Bearer {self.__secret_key}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                response_data = response.json()["data"]
+                
+                return {
+                    "id": response_data["id"],
+                    "status": response_data["status"],
+                    "address": response_data["address"],
+                    "btc": response_data["btcAmount"],
+                    "customer_email": response_data["custome"]['email'],
+                }
+            raise Exception(f"{response.json()['message']}")
+        except (HTTPError, ConnectionError) as e:
+            raise Exception(f"Error sending lightning payment: {e}")
