@@ -1,17 +1,12 @@
 from urllib.error import HTTPError
 import requests
 from decouple import config
-
-from .schemas import (
-    PaymentPriority,
-    BitnobCustomer,
-    BtcOnChainPayment,
-    BtcLightningPayment,
-)
+from .schemas import BtcLightningPayment
 
 
-class BitnobHandler:
-    """class handles all requests to the Bitnob API"""
+class BtcLighteningHandler:
+    """class handles all requests to the BTC lighterning API
+    """
 
     def __init__(self) -> None:
         self.__base_url = "https://sandboxapi.bitnob.co"

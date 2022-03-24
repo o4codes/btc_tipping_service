@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from utils.bitnob_handler import BtcOnChainHandler
+from utils.bitnob_onchain_handler import BtcOnChainHandler
+from utils.bitnob_lightening_handler import BtcLighteningHandler
 from utils import schemas
 
 from .models import OnChainTransaction, LightningTransaction
@@ -116,8 +117,8 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         )
         
         try:
-            bitnob_handler = BitnobHandler()
-            response = bitnob_handler.send_lightning_payment(payment_object)
+            lightning_handler = BtcLighteningHandler()
+            response = lightning_handler.send_lightning_payment(payment_object)
             print(response)
             
             lightening_transaction = LightningTransaction.objects.create(

@@ -5,10 +5,12 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
+from utils.bitnob_lightening_handler import BtcLighteningHandler
+from utils.bitnob_onchain_handler import BtcOnChainHandler
 from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer
 from .models import OnChainTransaction, LightningTransaction
 from utils import schemas
-from utils.bitnob_handler import BitnobHandler
+
 
 # Create your views here.
 class OnChainTransactionViews(APIView):
@@ -57,8 +59,8 @@ class OnChainTransactionDetailView(APIView):
             data = serializer.data
 
             if transaction.status == "pending":
-                bitnob_handler = BitnobHandler()
-                response = bitnob_handler.get_transaction_data(data["bitnob_id"])
+                onchain_handler = BtcOnChainHandler()
+                response = onchain_handler.get_transaction_data(data["bitnob_id"])
                 data["status"] = response["status"]
 
                 serializer = OnChainTransactionSerializer(
@@ -84,8 +86,8 @@ class OnChainTransactionDetailView(APIView):
 @permission_classes([IsAuthenticated,])
 def verify_lightening_address(request, address):
     try:
-        bitnob_handler = BitnobHandler()
-        response = bitnob_handler.decode_lightning_address(address)
+        bitnob_lightening = BtcLighteningHandler()
+        response = bitnob_lightening.decode_lightning_address(address)
         return Response(
             schemas.ResponseData.success(response), status=status.HTTP_200_OK
         )
@@ -93,6 +95,7 @@ def verify_lightening_address(request, address):
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
         )
+        
         
 class LighteningTransactionViews(APIView):
     queryset = OnChainTransaction.objects.all()
