@@ -34,6 +34,7 @@ class OnChainTransactionViews(APIView):
     def get(self, request, format=None):
         transactions = get_list_or_404(OnChainTransaction, sender=request.user)
         serializer = OnChainTransactionSerializer(transactions, many=True)
+            
         return Response(
             schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
         )
@@ -44,12 +45,13 @@ class OnChainTransactionDetailView(APIView):
     serializer_class = OnChainTransactionSerializer
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, pk, format=None):
-        transaction = get_object_or_404(OnChainTransaction, pk=pk, sender=request.user)
-        serializer = OnChainTransactionSerializer(transaction)
-        data = serializer.data
-
+    def get(self, request, sec_id, format=None):
         try:
+            transaction = OnChainTransaction.objects.get(sec_id=sec_id, sender=request.user)
+            serializer = OnChainTransactionSerializer(transaction)
+            data = serializer.data
+
+        
             if transaction.status == "pending":
                 bitnob_handler = BitnobHandler()
                 response = bitnob_handler.get_transaction_data(data["bitnob_id"])
@@ -60,11 +62,15 @@ class OnChainTransactionDetailView(APIView):
                 )
                 if serializer.is_valid():
                     serializer.save()
-
+                    
             return Response(
                 schemas.ResponseData.success(data), status=status.HTTP_200_OK
             )
+        except OnChainTransaction.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.error("Transaction does not exist"), status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
             return Response(
-                schemas.ResponseData.error(e), status=status.HTTP_424_FAILED_DEPENDENCY
+                schemas.ResponseData.error(str(e)), status=status.HTTP_424_FAILED_DEPENDENCY
             )

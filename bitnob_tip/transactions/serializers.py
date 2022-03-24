@@ -10,11 +10,12 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
     """
     Serializer for on-chain transactions.
     """
-
+    id = serializers.UUIDField(read_only=True, source="sec_id")
     class Meta:
         model = OnChainTransaction
         fields = (
             "id",
+            # "sec_id",
             "btc",
             "satoshis",
             "receiving_address",
@@ -27,7 +28,7 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         read_only_fields = (
-            "id",
+            # "sec_id",
             "bitnob_id",
             "satoshis",
             "status",
