@@ -7,12 +7,14 @@ class PaymentPriority(str, Enum):
     REGULAR = "regular"
     HIGH = "high"
 
+
 class PaymentStatus(str, Enum):
     """Enum choices for payment status"""
 
     PENDING = "pending"
     COMPLETED = "completed"
     FAILED = "failed"
+
 
 class BitnobCustomer:
     """Schema for customer data"""
@@ -38,8 +40,7 @@ class BitnobCustomer:
 
 
 class BtcOnChainPayment:
-    """Schema for onchain btc payment
-    """
+    """Schema for onchain btc payment"""
 
     def __init__(
         self,
@@ -48,7 +49,7 @@ class BtcOnChainPayment:
         customer_email: str,
         description: str,
         priorityLevel: PaymentPriority = PaymentPriority.REGULAR,
-    ):  
+    ):
         self.__address = address
         self.__customerEmail = customer_email
         self.__description = description
@@ -58,18 +59,15 @@ class BtcOnChainPayment:
         self.__id = None
 
     def set_id(self, id: str) -> None:
-        """Set id for onchain btc payment
-        """
+        """Set id for onchain btc payment"""
         self.__id = id
-        
+
     def set_status(self, status: PaymentStatus) -> None:
-        """Set status for onchain btc payment
-        """
+        """Set status for onchain btc payment"""
         self.__status = status
-        
+
     def to_reqeust_payload(self) -> dict:
-        """Return dict representation of onchain btc payment
-        """
+        """Return dict representation of onchain btc payment"""
         return {
             "satoshis": self.__satoshis,
             "address": self.__address,
@@ -77,10 +75,9 @@ class BtcOnChainPayment:
             "description": self.__description,
             "priorityLevel": self.__priorityLevel,
         }
-        
-    def to_response_payload(self ) -> None:
-        """Return a response dict structure for onchain btc payment
-        """
+
+    def to_response_payload(self) -> None:
+        """Return a response dict structure for onchain btc payment"""
         return {
             "id": self.__id,
             "status": self.__status,
@@ -90,47 +87,41 @@ class BtcOnChainPayment:
             "description": self.__description,
             "priorityLevel": self.__priorityLevel,
         }
-        
+
 
 class BtcLightningPayment:
-    """Schema for lightning btc payment
-    """
+    """Schema for lightning btc payment"""
 
     def __init__(
         self,
-        btc_amount: float, 
+        btc_amount: float,
         lnAddress: str,
         reference: str,
         customer_email: str,
     ):
-        
+
         self.__lnAddress = lnAddress
         self.__reference = reference
         self.__customer_email = customer_email
         self.__satoshis = btc_amount * 100000000
-    
-    
+
     def to_request_payload(self) -> dict:
-        """ Return dict representation of lightning btc payment
-        """
+        """Return dict representation of lightning btc payment"""
         return {
             "satoshis": self.__satoshis,
             "lnAddress": self.__lnAddress,
             "reference": self.__reference,
             "customerEmail": self.__customer_email,
         }
-    
+
 
 class ResponseData:
-    
     @staticmethod
     def success(data: dict) -> dict:
-        """Return a success response
-        """
+        """Return a success response"""
         return {"status": True, "data": data}
-    
+
     @staticmethod
     def error(message: str) -> dict:
-        """Return an error response
-        """
+        """Return an error response"""
         return {"status": False, "message": message}

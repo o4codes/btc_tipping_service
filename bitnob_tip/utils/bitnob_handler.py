@@ -76,7 +76,6 @@ class BitnobHandler:
         except (HTTPError, ConnectionError) as e:
             raise Exception(f"Error creating customer: {e}")
 
-
     def send_onchain_btc(self, payment_request: BtcOnChainPayment) -> dict:
         """sends onchain btc payment to Bitnob
 
@@ -120,16 +119,15 @@ class BitnobHandler:
 
             if response.status_code == 200:
                 response_data = response.json()["data"]
-                
+
                 payment_request.set_id(response_data["id"])
                 payment_request.set_status(response_data["status"])
-                
+
                 return payment_request.to_response_payload()
 
             raise Exception(f"Payment Failed: {response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
             raise Exception(f"Error sending onchain btc: {e}")
-
 
     def decode_lightning_address(self, ln_address: str):
         """Decodes a lightning address
@@ -217,13 +215,12 @@ class BitnobHandler:
                 raise Exception(f"Error sending lightning payment: {e}")
         raise Exception("BTC Amount to send is not within sendable range")
 
-
     def get_transaction_data(self, transaction_id: str) -> dict:
         """gets transaction status from Bitnob
 
         Args:
             transaction_id (str): transaction id to be checked
-        
+
         Returns (dict): response from Bitnob
             Sample data: {
                 "id": "1e258349-2043-4ca1-b39c-8418f9e0d36d",
@@ -232,12 +229,12 @@ class BitnobHandler:
                 "btc": 0.00011,
                 "customer_email": "mail@mail.com
             }
-            
+
         Raises:
             Exception: if request fails
             Exception: if trasnation is not found
         """
-        
+
         url = f"{self.__base_url}{self.__transactions_endpoint}/{transaction_id}"
 
         headers = {
@@ -245,18 +242,18 @@ class BitnobHandler:
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        
+
         try:
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
                 response_data = response.json()["data"]
-                
+
                 return {
                     "id": response_data["id"],
                     "status": response_data["status"],
                     "address": response_data["address"],
                     "btc": response_data["btcAmount"],
-                    "customer_email": response_data["customer"]['email'],
+                    "customer_email": response_data["customer"]["email"],
                 }
             raise Exception(f"{response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
