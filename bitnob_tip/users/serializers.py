@@ -32,8 +32,12 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data.get('email')
         )
         
-        bitnob_response = BitnobHandler().create_customer(customer)
+        try:
+            bitnob_response = BitnobHandler().create_customer(customer)
+            
+            validated_data['bitnob_id'] = bitnob_response['id']
+            user = get_user_model().objects.create_user(**validated_data)
+            return user
         
-        validated_data['bitnob_id'] = bitnob_response['id']
-        user = get_user_model().objects.create_user(**validated_data)
-        return user
+        except Exception as e:
+            raise serializers.ValidationError(e)
