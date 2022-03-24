@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -8,7 +9,7 @@ class OnChainTransaction(models.Model):
     """
     Model for on-chain transactions.
     """
-
+    sec_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     btc = models.FloatField(null=False, blank=False)
     satoshis = models.IntegerField(null=True, blank=True)
     receiving_address = models.CharField(max_length=100, null=False, blank=False)
@@ -31,7 +32,7 @@ class LightningTransaction(models.Model):
     """
     Model for lightning transactions.
     """
-
+    sec_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     btc = models.FloatField(null=False, blank=False)
     satoshis = models.IntegerField(null=True, blank=True)
     lightening_address = models.CharField(max_length=100, null=False, blank=False)
