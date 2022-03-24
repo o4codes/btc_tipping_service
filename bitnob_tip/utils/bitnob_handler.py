@@ -111,14 +111,10 @@ class BitnobHandler:
             if response.status_code == 200:
                 response_data = response.json()["data"]
                 
-                return  BtcOnChainPayment(
-                    id=response_data["id"],
-                    address = data['address'],
-                    btc_amount=response_data['btcAmount'],
-                    customer_email=data['customerEmail'],
-                    description=data['description'],
-                    status=response_data['status'],
-                ).to_response_payload()
+                payment_request.set_id(response_data["id"])
+                payment_request.set_status(response_data["status"])
+                
+                return payment_request.to_response_payload()
 
             raise Exception(f"Payment Failed: {response.json()['message']}")
         except (HTTPError, ConnectionError) as e:

@@ -47,8 +47,6 @@ class BtcOnChainPayment:
         address: str,
         customer_email: str,
         description: str,
-        id : str = None,
-        status: PaymentStatus = None,
         priorityLevel: PaymentPriority = PaymentPriority.REGULAR,
     ):  
         self.__address = address
@@ -56,9 +54,19 @@ class BtcOnChainPayment:
         self.__description = description
         self.__priorityLevel = priorityLevel
         self.__satoshis = btc_amount * 100000000
-        self.__status = status
-        self.__id = id
+        self.__status = None
+        self.__id = None
 
+    def set_id(self, id: str) -> None:
+        """Set id for onchain btc payment
+        """
+        self.__id = id
+        
+    def set_status(self, status: PaymentStatus) -> None:
+        """Set status for onchain btc payment
+        """
+        self.__status = status
+        
     def to_reqeust_payload(self) -> dict:
         """Return dict representation of onchain btc payment
         """
