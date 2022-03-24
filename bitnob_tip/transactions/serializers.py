@@ -15,7 +15,6 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
         model = OnChainTransaction
         fields = (
             "id",
-            # "sec_id",
             "btc",
             "satoshis",
             "receiving_address",
@@ -28,7 +27,6 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         read_only_fields = (
-            # "sec_id",
             "bitnob_id",
             "satoshis",
             "status",

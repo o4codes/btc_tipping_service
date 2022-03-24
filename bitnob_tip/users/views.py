@@ -1,3 +1,4 @@
+from uuid import UUID
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -5,10 +6,12 @@ from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 from .permissions import IsAuthenticatedOrCreate
+from utils import schemas
 
 
 class UserCreateList(APIView):
-    """Handles creation of user and list all user"""
+    """Handles creation of user and list all user
+    """
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -19,11 +22,50 @@ class UserCreateList(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response(
+                schemas.ResponseData.success(serializer.data), 
+                status=status.HTTP_201_CREATED
+                )
+            
+        return Response(
+            schemas.ResponseData.error(serializer.errors), 
+            status=status.HTTP_400_BAD_REQUEST
+            )
 
     def get(self, request, format=None):
         """List all users"""
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            schemas.ResponseData.success(serializer.data), 
+            status=status.HTTP_200_OK
+        )
+
+class UserDetail(APIView):
+    """Handles retrieval of user"""
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticatedOrCreate,)
+
+    def get(self, request, sec_id, format=None):
+        """Retrieve a user
+        """
+        try:
+            user = User.objects.get(sec_id=sec_id)
+            serializer = UserSerializer(user)
+            return Response(
+                schemas.ResponseData.success(serializer.data), 
+                status=status.HTTP_200_OK
+            )
+        except User.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.error({"message": "User not found"}), 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                schemas.ResponseData.error(str(e)), 
+                status=status.HTTP_400_BAD_REQUEST
+            )

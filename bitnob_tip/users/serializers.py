@@ -7,6 +7,7 @@ from utils.schemas import BitnobCustomer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True, source="sec_id")
     class Meta:
         model = get_user_model()
         fields = (

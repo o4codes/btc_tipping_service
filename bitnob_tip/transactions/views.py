@@ -32,12 +32,17 @@ class OnChainTransactionViews(APIView):
         )
 
     def get(self, request, format=None):
-        transactions = get_list_or_404(OnChainTransaction, sender=request.user)
-        serializer = OnChainTransactionSerializer(transactions, many=True)
-            
-        return Response(
-            schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
-        )
+        try:
+            transactions = OnChainTransaction.objects.get(sender=request.user)
+            serializer = OnChainTransactionSerializer(transactions, many=True)
+                
+            return Response(
+                schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
+            )
+        except OnChainTransaction.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.success([]), status=status.HTTP_200_OK
+            )
 
 
 class OnChainTransactionDetailView(APIView):
@@ -72,5 +77,5 @@ class OnChainTransactionDetailView(APIView):
             )
         except Exception as e:
             return Response(
-                schemas.ResponseData.error(str(e)), status=status.HTTP_424_FAILED_DEPENDENCY
+                schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
             )

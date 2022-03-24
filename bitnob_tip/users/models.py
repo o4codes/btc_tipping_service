@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.db import models
 from django.core.mail import send_mail
@@ -5,10 +6,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.validators import RegexValidator
-from django.conf import settings
-from rest_framework.reverse import reverse_lazy
-
-# Create your models here.
 
 
 class UserManager(BaseUserManager):
@@ -44,6 +41,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    sec_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     bitnob_id = models.CharField(max_length=100, unique=True, blank=False, null=False)
     email = models.EmailField(verbose_name="email address", unique=True)
     phone_regex = RegexValidator(

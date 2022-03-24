@@ -6,7 +6,7 @@ urlpatterns = [
         "on-chain/tips/", OnChainTransactionViews.as_view(), name="onchain-create-list"
     ),
     path(
-        "on-chain/tips/<uuid:sec_id>/",
+        "on-chain/tips/<str:sec_id>/",
         OnChainTransactionDetailView.as_view(),
         name="onchain-detail",
     ),
