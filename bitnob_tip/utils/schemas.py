@@ -52,7 +52,7 @@ class BtcOnChainPayment:
         self.__address = address
         self.__customerEmail = customer_email
         self.__description = description
-        self.__priorityLevel = priorityLevel
+        self.__priorityLevel = priorityLevel.value
         self.__satoshis = btc_amount * 100000000
         self.__status = None
         self.__id = None
@@ -120,4 +120,17 @@ class BtcLightningPayment:
             "customerEmail": self.__customer_email,
         }
     
-       
+
+class ResponseData:
+    
+    @staticmethod
+    def success(data: dict) -> dict:
+        """Return a success response
+        """
+        return {"status": True, "data": data}
+    
+    @staticmethod
+    def error(message: str) -> dict:
+        """Return an error response
+        """
+        return {"status": False, "message": message}

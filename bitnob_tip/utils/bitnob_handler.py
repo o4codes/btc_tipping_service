@@ -90,6 +90,15 @@ class BitnobHandler:
 
         Returns:
             dict: response from Bitnob
+            sample_data: {
+                "id": "1e258349-2043-4ca1-b39c-8418f9e0d36d",
+                "status": "pending",
+                "address": "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX",
+                "satoshis": 100000000,
+                "customerEmail": "mail@mail.com",
+                "description": "test",
+                "priorityLevel": "regular",
+            }
 
         Raises:
             Exception: if payment request fails
