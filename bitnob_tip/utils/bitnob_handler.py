@@ -161,10 +161,7 @@ class BitnobHandler:
 
             if response.status_code == 200:
                 response_data = response.json()["data"]
-                return {
-                    "satMinSendable": response_data["satMinSendable"],
-                    "satMaxSendable": response_data["satMaxSendable"],
-                }
+                return response_data
 
             raise Exception(f"Payment Failed: {response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
@@ -200,9 +197,11 @@ class BitnobHandler:
         data = payment_request.to_request_payload()
 
         amount_range = self.decode_lightning_address(data["lnAddress"])
-
-        if (data["satoshis"] > amount_range["satMinSendable"]) and (
-            data["satoshis"] < amount_range["satMaxSendable"]
+        min_btc = int(amount_range["satMinSendable"])/100000000
+        max_btc = int(amount_range["satMaxSendable"])/100000000
+        
+        if (data["satoshis"] >= amount_range["satMinSendable"]) and (
+            data["satoshis"] <= amount_range["satMaxSendable"]
         ):
             try:
                 response = requests.post(url, json=data, headers=headers)
@@ -213,7 +212,10 @@ class BitnobHandler:
                 raise Exception(f"Payment Failed: {response.json()['message']}")
             except (HTTPError, ConnectionError) as e:
                 raise Exception(f"Error sending lightning payment: {e}")
-        raise Exception("BTC Amount to send is not within sendable range")
+        raise Exception(f"""
+                        BTC Amount to send is not within sendable range\n
+                        Min BTC: {min_btc}, Max BTC: {max_btc}
+                        """ )
 
     def get_transaction_data(self, transaction_id: str) -> dict:
         """gets transaction status from Bitnob
