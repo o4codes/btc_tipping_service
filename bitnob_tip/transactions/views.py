@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from .serializers import OnChainTransactionSerializer
 from .models import OnChainTransaction
 from utils import schemas
+from utils.bitnob_handler import BitnobHandler
 
 # Create your views here.
 class OnChainTransactionViews(APIView):
@@ -35,4 +36,18 @@ class OnChainTransactionDetailView(APIView):
     def get(self, request, pk, format=None):
         transaction = get_object_or_404(OnChainTransaction, pk=pk, sender=request.user)
         serializer = OnChainTransactionSerializer(transaction)
-        return Response(schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK)
+        data = serializer.data
+        
+        try:
+            if transaction.status == 'pending':
+                bitnob_handler = BitnobHandler()
+                response = bitnob_handler.get_transaction_data(data['bitnob_id'])
+                data['status'] = response['status']
+                
+                serializer = OnChainTransactionSerializer(transaction, data=data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+
+            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(schemas.ResponseData.error(e), status=status.HTTP_424_FAILED_DEPENDENCY)

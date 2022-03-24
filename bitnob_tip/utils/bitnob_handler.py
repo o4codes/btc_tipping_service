@@ -218,7 +218,7 @@ class BitnobHandler:
         raise Exception("BTC Amount to send is not within sendable range")
 
 
-    def get_transaction_status(self, transaction_id: str) -> dict:
+    def get_transaction_data(self, transaction_id: str) -> dict:
         """gets transaction status from Bitnob
 
         Args:
@@ -256,7 +256,7 @@ class BitnobHandler:
                     "status": response_data["status"],
                     "address": response_data["address"],
                     "btc": response_data["btcAmount"],
-                    "customer_email": response_data["custome"]['email'],
+                    "customer_email": response_data["customer"]['email'],
                 }
             raise Exception(f"{response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
