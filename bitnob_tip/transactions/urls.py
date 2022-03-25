@@ -4,7 +4,8 @@ from .views import (
     OnChainTransactionDetailView,
     verify_btc_onchain_address,
     LighteningTransactionViews,
-    LighteningDetailsView
+    LighteningDetailsView,
+    receiver_confirm_btc_lightening
     )
 
 urlpatterns = [
@@ -38,7 +39,12 @@ urlpatterns = [
         name="lightening-detail",
     ),
     
-    
+    path(
+        "lightening/confirm-tip/<str:sec_id>/",
+        receiver_confirm_btc_lightening,
+        name="confirm btc transaction"
+         
+    )
     
     
 ]

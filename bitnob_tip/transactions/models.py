@@ -23,7 +23,7 @@ class OnChainTransaction(models.Model):
     priority_level = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=100, null=False, blank=False)
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
-    is_receciever_confirmed = models.BooleanField(default=False)
+    is_receiver_confirmed = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,7 +50,7 @@ class LightningTransaction(models.Model):
     description = models.CharField(max_length=100, null=False, blank=False, default="Payments")
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
     payment_request = models.CharField(max_length=100, null=False, blank=False)
-    is_receciever_confirmed = models.BooleanField(default=False)
+    is_receiver_confirmed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
