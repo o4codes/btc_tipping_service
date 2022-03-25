@@ -2,9 +2,9 @@ from django.urls import path, include
 from .views import (
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
-    verify_lightening_address,
     verify_btc_onchain_address,
-    LighteningTransactionViews
+    LighteningTransactionViews,
+    LighteningDetailsView
     )
 
 urlpatterns = [
@@ -33,7 +33,12 @@ urlpatterns = [
     ),
     
     path(
-        "btc-lnAddress/verify/<str:payment_request>/", 
-        verify_lightening_address, 
-        name="verify-lightening-address"),
+        "lightening/tips/<str:sec_id>/",
+        LighteningDetailsView.as_view(),
+        name="lightening-detail",
+    ),
+    
+    
+    
+    
 ]

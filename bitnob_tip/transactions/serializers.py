@@ -137,7 +137,6 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         try:
             lightning_handler = BtcLighteningHandler()
             payment_object = lightning_handler.create_invoice(payment_object)
-            print(payment_object)
             payment_object = lightning_handler.pay_invoice(payment_object)
             response = payment_object.to_response_payload()
             

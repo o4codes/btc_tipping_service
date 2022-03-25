@@ -157,3 +157,42 @@ class LighteningTransactionViews(APIView):
             return Response(
                 schemas.ResponseData.success([]), status=status.HTTP_200_OK
             )
+
+class LighteningDetailsView(APIView):
+    queryset = LightningTransaction.objects.all()
+    serializer_class = LightningTransactionSerializer
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self, request, sec_id, format=None):
+        try:
+            transaction = LightningTransaction.objects.filter(Q(sec_id=sec_id) & (Q(sender=request.user) | Q(receiver=request.user)))
+            
+            # transaction = LightningTransaction.objects.get(sec_id=sec_id, sender=request.user)
+            serializer = LightningTransactionSerializer(transaction, many=True)
+            data = serializer.data
+            
+            if data == []:
+                raise LightningTransaction.DoesNotExist
+            
+            if data[0]['status'] == "pending":
+                bitnob_lightening = BtcLighteningHandler()
+                response = bitnob_lightening.get_transaction_data(data[0]["bitnob_id"])
+                data[0]["status"] = response["status"]
+
+                serializer = LightningTransactionSerializer(
+                    transaction, data=data, partial=True
+                )
+                if serializer.is_valid():
+                    serializer.save()
+                    
+            return Response(
+                schemas.ResponseData.success(data[0]), status=status.HTTP_200_OK
+            )
+        except LightningTransaction.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.error("Transaction does not exist"), status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
+            )
