@@ -26,7 +26,7 @@ urlpatterns = [
     ),
     
     path(
-        "btc-lnAddress/verify/<str:address>/", 
+        "btc-lnAddress/verify/<str:payment_request>/", 
         verify_lightening_address, 
         name="verify-lightening-address"),
     

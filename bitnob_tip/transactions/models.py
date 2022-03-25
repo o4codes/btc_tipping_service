@@ -14,10 +14,10 @@ class OnChainTransaction(models.Model):
     satoshis = models.IntegerField(null=True, blank=True)
     receiving_address = models.CharField(max_length=100, null=False, blank=False)
     sender = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False
+        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_sender",
     )
     receiver = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False
+        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_receiver"
     )
     description = models.CharField(max_length=100, null=False, blank=False)
     priority_level = models.CharField(max_length=100, null=False, blank=False)
@@ -41,10 +41,10 @@ class LightningTransaction(models.Model):
     lightening_address = models.CharField(max_length=100, null=False, blank=False)
     reference = models.CharField(max_length=100, null=False, blank=False)
     sender = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False
+        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_sender"
     )
     receiver = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False
+        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_receiver"
     )
     priority_level = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=100, null=False, blank=False)

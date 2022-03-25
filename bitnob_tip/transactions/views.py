@@ -135,13 +135,24 @@ def verify_btc_onchain_address(request, address):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated,])
-def verify_lightening_address(request, address):
+def verify_lightening_address(request, lightening_request):
     try:
         bitnob_lightening = BtcLighteningHandler()
-        response = bitnob_lightening.decode_lightning_address(address)
-        return Response(
-            schemas.ResponseData.success(response), status=status.HTTP_200_OK
-        )
+        response = bitnob_lightening.initiate_request(lightening_request)
+        if response:
+            data = {
+                "is_valid": True,
+                "message": "Payment Request is valid",
+            }
+            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
+        
+        else: 
+            data = {
+                "is_valid": False,
+                "message": "Payment Request is invalid",
+            }
+            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
+            
     except Exception as e:
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST

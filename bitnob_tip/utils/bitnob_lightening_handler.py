@@ -44,21 +44,23 @@ class BtcLighteningHandler:
             raise Exception("Error creating invoice: " + str(e))
     
     
-    def initiate_request(self, payment_request: BtcLightningPayment) -> dict:
+    def initiate_request(self, payment_request: str) -> bool:
         """ Used to verify payment request by sender
 
         Args:
             payment_request (BtcLightningPayment): payment request to be sent to Bitnob
 
         Returns:
-            payment_request (BtcLightningPayment): data returned as object from Bitnob
+            bool: True if payment is valid, False otherwise
         """
         url = f"{self.__base_url}{self.__lightning_initiate_payment}"
         data = payment_request.to_initiate_paymnet_request_payload()
         try:
             response = requests.post(url, json=data, headers=self.__headers)
-            if response.status_code == 200 and response.json()["data"]["isExpired"] == False:
-                return payment_request
+            if response.status_code == 200:
+                if response.json()["data"]["isExpired"] == False:
+                    return True
+                return False
             raise Exception("Error initiating payment: " + response.text)
         except (HTTPError, ConnectionError) as e:
             raise Exception("Error initiating payment: " + str(e))
@@ -127,4 +129,4 @@ class BtcLighteningHandler:
                 }
             raise Exception(f"{response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
-            raise Exception(f"Error sending lightning payment: {e}")
+            raise Exception(f"Error getting transaction data: {e}")
