@@ -16,15 +16,10 @@ class OnChainTransaction(models.Model):
     sender = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_sender",
     )
-    receiver = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_receiver"
-    )
     description = models.CharField(max_length=100, null=False, blank=False)
     priority_level = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=100, null=False, blank=False)
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
-    is_receiver_confirmed = models.BooleanField(default=False)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
