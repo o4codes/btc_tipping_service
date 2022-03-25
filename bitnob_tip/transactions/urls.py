@@ -25,14 +25,15 @@ urlpatterns = [
         name="verify-btc-onchain-address"
     ),
     
-    path(
-        "btc-lnAddress/verify/<str:payment_request>/", 
-        verify_lightening_address, 
-        name="verify-lightening-address"),
     
     path(
         "lightening/tips/",
         LighteningTransactionViews.as_view(),
         name = "lightening-create-list"
-    )
+    ),
+    
+    path(
+        "btc-lnAddress/verify/<str:payment_request>/", 
+        verify_lightening_address, 
+        name="verify-lightening-address"),
 ]

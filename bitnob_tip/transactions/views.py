@@ -4,10 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from django.db.models import Q
 
 from utils.bitnob_lightening_handler import BtcLighteningHandler
 from utils.bitnob_onchain_handler import BtcOnChainHandler
-from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer, ReceiverIntiateRequest
+from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer
 from .models import OnChainTransaction, LightningTransaction
 from utils import schemas
 
@@ -145,7 +146,8 @@ class LighteningTransactionViews(APIView):
 
     def get(self, request, format=None):
         try:
-            transactions = LightningTransaction.objects.get(sender=request.user)
+            transactions = LightningTransaction.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+            
             serializer = LightningTransactionSerializer(transactions, many=True)
                 
             return Response(

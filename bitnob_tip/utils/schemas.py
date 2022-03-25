@@ -136,7 +136,7 @@ class BtcLightningPayment:
         """Return dict representation of lightning btc payment"""
         return {
             "request": self.__request,
-            "reference": self.__reference,
+            "reference": str(self.__reference),
             "customerEmail": self.__sender_email,
         }
         

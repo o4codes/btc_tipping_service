@@ -14,7 +14,7 @@ class BtcLighteningHandler:
         self.__lightning_initiate_payment = "/api/v1/wallets/ln/initiatepayment"
         self.__lightning_pay_invoice = "/api/v1/wallets/ln/pay"
         self.__transactions_endpoint = "/api/v1/transactions"
-        self.__secret_key = config("SECRET_KEY")
+        self.__secret_key = config("BITNOB_SECRET_KEY")
         self.__headers = {
             "Authorization": f"Bearer {self.__secret_key}",
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ class BtcLighteningHandler:
             raise Exception("Error creating invoice: " + str(e))
     
     
-    def initiate_request(self, payment_request: str) -> bool:
+    def initiate_request(self, payment_request: BtcLightningPayment) -> bool:
         """ Used to verify payment request by sender
 
         Args:
