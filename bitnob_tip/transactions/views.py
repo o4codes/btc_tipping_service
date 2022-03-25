@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 from utils.bitnob_lightening_handler import BtcLighteningHandler
 from utils.bitnob_onchain_handler import BtcOnChainHandler
-from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer
+from .serializers import OnChainTransactionSerializer, LightningTransactionSerializer, ReceiverIntiateRequest
 from .models import OnChainTransaction, LightningTransaction
 from utils import schemas
 
@@ -81,41 +81,6 @@ class OnChainTransactionDetailView(APIView):
                 schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
             )
         
-        
-class LighteningTransactionViews(APIView):
-    queryset = OnChainTransaction.objects.all()
-    serializer_class = LightningTransactionSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request, format=None):
-        serializer = LightningTransactionSerializer(
-            data=request.data, context={"request": request}
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                schemas.ResponseData.success(serializer.data),
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(
-            schemas.ResponseData.error(serializer.errors),
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    def get(self, request, format=None):
-        try:
-            transactions = LightningTransaction.objects.get(sender=request.user)
-            serializer = LightningTransactionSerializer(transactions, many=True)
-                
-            return Response(
-                schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
-            )
-        except LightningTransaction.DoesNotExist as e:
-            return Response(
-                schemas.ResponseData.success([]), status=status.HTTP_200_OK
-            )
-
-
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def verify_btc_onchain_address(request, address):
@@ -157,3 +122,36 @@ def verify_lightening_address(request, lightening_request):
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
         )
+        
+class LighteningTransactionViews(APIView):
+    queryset = OnChainTransaction.objects.all()
+    serializer_class = LightningTransactionSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        serializer = LightningTransactionSerializer(
+            data=request.data, context={"request": request}
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                schemas.ResponseData.success(serializer.data),
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            schemas.ResponseData.error(serializer.errors),
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    def get(self, request, format=None):
+        try:
+            transactions = LightningTransaction.objects.get(sender=request.user)
+            serializer = LightningTransactionSerializer(transactions, many=True)
+                
+            return Response(
+                schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
+            )
+        except LightningTransaction.DoesNotExist as e:
+            return Response(
+                schemas.ResponseData.success([]), status=status.HTTP_200_OK
+            )

@@ -1,3 +1,4 @@
+from django.dispatch import receiver
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from utils.bitnob_onchain_handler import BtcOnChainHandler
@@ -78,7 +79,8 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
     Serializer for lightning transactions.
     """
     id = serializers.UUIDField(read_only=True, source="sec_id")
-    
+    receiver_email = serializers.EmailField()
+    description = serializers.CharField(max_length=255)
     class Meta:
         model = LightningTransaction
         fields = (
@@ -88,6 +90,7 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             "lightening_address",
             "reference",
             "sender",
+            "receiver_email",
             "status",
             "bitnob_id",
             "created_at",
@@ -98,10 +101,20 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             "bitnob_id",
             "satoshis",
             "status",
+            "reference",
             "sender",
             "created_at",
             "updated_at",
         )
+    
+    def validate(self, data):
+        """
+        Validate the data.
+        """
+        if get_user_model().objects.filter(email=data["receiver_email"]).count() == 0:
+            raise serializers.ValidationError("Reciever account does not exist")
+        
+        return data
     
     def create(self, validated_data):
         """
@@ -111,18 +124,29 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         # intialize payment object
         payment_object = schemas.BtcLightningPayment(
             btc_amount=validated_data["btc"],
-            lnAddress=validated_data["lightening_address"],
-            reference=validated_data["reference"],
-            customer_email=self.context["request"].user.email,
+            description=validated_data["description"],
+            sender_email=self.context["request"].user.email,
+            receiver_email=validated_data["receiver_email"]
         )
         
         try:
-            lightning_handler = BtcLighteningHandler()
-            response = lightning_handler.send_lightning_payment(payment_object)
-            print(response)
+            lightning_handler = BtcLighteningHandler(payment_object)
+            payment_object = lightning_handler.initiate_request()
+            payment_object = lightning_handler.pay_invoice(payment_object)
+            response = payment_object.to_response_payload()
             
             lightening_transaction = LightningTransaction.objects.create(
                 btc = validated_data["btc"],
+                satoshis = response["satoshis"],
+                reference = response["reference"],
+                sender = self.context["request"].user,
+                receiver = get_user_model().objects.get(email=validated_data["receiver_email"]),
+                status = response["status"],
+                payment_request = response["prequest"],
+                bitnob_id = response["id"],
             )
+            lightening_transaction.save()
+            return lightening_transaction
         except Exception as e:
             pass
+        

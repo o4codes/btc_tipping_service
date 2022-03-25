@@ -139,13 +139,16 @@ class BtcLightningPayment:
             "reference": self.__reference,
             "customerEmail": self.__sender_email,
         }
+        
     def to_response_payload(self) -> dict:
         """ Response of all requests
         """
         return {
             "id": self.__id,
             "reference": self.__reference,
+            "request": self.__request,
             "btcAmount": self.__satoshis / 100000000,
+            'satoshis': self.__satoshis,
             "senderEmail": self.__sender_email,
             "receiverEmail": self.__receiver_email,
             "status": "pending",

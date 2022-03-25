@@ -38,7 +38,6 @@ class LightningTransaction(models.Model):
     sec_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     btc = models.FloatField(null=False, blank=False)
     satoshis = models.IntegerField(null=True, blank=True)
-    lightening_address = models.CharField(max_length=100, null=False, blank=False)
     reference = models.CharField(max_length=100, null=False, blank=False)
     sender = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_sender"
@@ -46,7 +45,6 @@ class LightningTransaction(models.Model):
     receiver = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_receiver"
     )
-    priority_level = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=100, null=False, blank=False)
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
     payment_request = models.CharField(max_length=100, null=False, blank=False)

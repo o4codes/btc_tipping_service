@@ -22,7 +22,7 @@ class BtcLighteningHandler:
         }
 
 
-    def create_invoice(self, payment_request: BtcLightningPayment) -> dict:
+    def create_invoice(self, payment_request: BtcLightningPayment) -> BtcLightningPayment:
         """ Receiver creates a lightning invoice
 
         Args:
@@ -66,7 +66,7 @@ class BtcLighteningHandler:
             raise Exception("Error initiating payment: " + str(e))
         
         
-    def pay_invoice(self, payment_request: BtcLightningPayment) -> dict:
+    def pay_invoice(self, payment_request: BtcLightningPayment) -> BtcLightningPayment:
         """ Sender pays invoice
 
         Args:
