@@ -1,5 +1,5 @@
 from enum import Enum
-
+from uuid import uuid4
 
 class PaymentPriority(str, Enum):
     """Enum choices for payment priority"""
@@ -95,23 +95,60 @@ class BtcLightningPayment:
     def __init__(
         self,
         btc_amount: float,
-        lnAddress: str,
-        reference: str,
-        customer_email: str,
+        description: str,
+        sender_email: str,
+        receiver_email: str,
     ):
 
-        self.__lnAddress = lnAddress
-        self.__reference = reference
-        self.__customer_email = customer_email
+        self.__description = description
+        self.__sender_email = sender_email
+        self.__receiver_email = receiver_email
         self.__satoshis = btc_amount * 100000000
+        self.__reference = uuid4()
+        self.__request = None
+        self.__id = None
+        
+    def set_request(self, request: str) -> None:
+        """Set reference for lightning btc payment
+        """
+        self.__request = request
+    
+    def set_id(self, id: str) -> None:
+        """Set id for lightning btc payment"""
+        self.__id = id
 
-    def to_request_payload(self) -> dict:
+
+    def to_create_invoice_request_payload(self) -> dict:
         """Return dict representation of lightning btc payment"""
         return {
             "satoshis": self.__satoshis,
-            "lnAddress": self.__lnAddress,
+            "description": self.__description,
+            "customerEmail": self.__receiver_email,
+        }
+    
+    def to_initiate_paymnet_request_payload(self) -> dict:
+        """Return dict representation of lightning btc payment"""
+        return {
+            "request": self.__request
+        }
+        
+    def to_invoice_request_payment(self) -> dict:
+        """Return dict representation of lightning btc payment"""
+        return {
+            "request": self.__request,
             "reference": self.__reference,
-            "customerEmail": self.__customer_email,
+            "customerEmail": self.__sender_email,
+        }
+    def to_response_payload(self) -> dict:
+        """ Response of all requests
+        """
+        return {
+            "id": self.__id,
+            "reference": self.__reference,
+            "btcAmount": self.__satoshis / 100000000,
+            "senderEmail": self.__sender_email,
+            "receiverEmail": self.__receiver_email,
+            "status": "pending",
         }
 
 

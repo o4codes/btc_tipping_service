@@ -117,4 +117,4 @@ class BtcOnChainHandler:
                 }
             raise Exception(f"{response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
-            raise Exception(f"Error sending lightning payment: {e}")
+            raise Exception(f"Error getting transaction data: {e}")
