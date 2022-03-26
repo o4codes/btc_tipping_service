@@ -50,6 +50,8 @@ class LightningDetailsView(APIView):
     permission_classes = (IsAuthenticated,)
     
     def get(self, request, sec_id, format=None):
+        """ Get details of a lightning transaction 
+        """
         try:
             transactions = LightningTransaction.objects.filter(Q(sec_id=sec_id) & (Q(sender=request.user) | Q(receiver=request.user)))
             
@@ -81,14 +83,13 @@ class LightningDetailsView(APIView):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated,])
-def receiver_confirm_btc_lightening(request, sec_id):
+def receiver_confirm_btc(request, sec_id):
     """ Endpoint for receiver to confirm if payment is successful
     """
     try:
         transaction = LightningTransaction.objects.get(sec_id=sec_id, receiver=request.user)
         
         if transaction.status == "pending":
-            print("Transaction is pending")
             bitnob_lightening = BtcLighteningHandler()
             response = bitnob_lightening.get_transaction_data(transaction.bitnob_id)
             transaction.status = response["status"]
@@ -103,7 +104,6 @@ def receiver_confirm_btc_lightening(request, sec_id):
             )
             
         elif transaction.status == "success":
-            print("Transaction is success")
             if transaction.is_receiver_confirmed != True:
                 transaction.is_receiver_confirmed = True
                 transaction.save()

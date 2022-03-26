@@ -1,11 +1,11 @@
 from django.urls import path, include
-from views.lightning_views import (
+from .views.lightning_views import (
     LightningTransactionViews,
     LightningDetailsView,
-    receiver_confirm_btc_lightening
+    receiver_confirm_btc
     )
 
-from views.onchain_views import (
+from .views.onchain_views import (
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
     verify_btc_onchain_address,
@@ -45,7 +45,7 @@ urlpatterns = [
     
     path(
         "lightning/confirm-tip/<str:sec_id>",
-        receiver_confirm_btc_lightening,
+        receiver_confirm_btc,
         name="confirm btc transaction"
          
     )
