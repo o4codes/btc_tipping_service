@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
-from bitnob_tip.utils.bitnob_lightning_handler import BtcLighteningHandler
+from utils.bitnob_lightning_handler import BtcLighteningHandler
 from utils.bitnob_onchain_handler import BtcOnChainHandler
 from transactions.serializers import OnChainTransactionSerializer
 from transactions.models import OnChainTransaction

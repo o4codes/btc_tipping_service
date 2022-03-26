@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from transactions.serializers import LightningTransactionSerializer
 from transactions.models import OnChainTransaction, LightningTransaction
-from bitnob_tip.utils.bitnob_lightning_handler import BtcLighteningHandler
+from utils.bitnob_lightning_handler import BtcLighteningHandler
 from utils import schemas
 
 class LightningTransactionViews(APIView):

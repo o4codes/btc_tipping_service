@@ -2,7 +2,7 @@ from django.dispatch import receiver
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from utils.bitnob_onchain_handler import BtcOnChainHandler
-from bitnob_tip.utils.bitnob_lightning_handler import BtcLighteningHandler
+from utils.bitnob_lightning_handler import BtcLighteningHandler
 from utils import schemas
 
 from .models import OnChainTransaction, LightningTransaction
