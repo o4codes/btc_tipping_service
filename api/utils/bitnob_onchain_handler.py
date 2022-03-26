@@ -1,8 +1,8 @@
 from urllib.error import HTTPError
 import requests
-from .schemas import BtcOnChainPayment
 from decouple import config
-from .bitnob_base import BitnobBase
+from api.utils.schemas import BtcOnChainPayment
+from api.utils.bitnob_base import BitnobBase
 
 
 class BtcOnChainHandler(BitnobBase):

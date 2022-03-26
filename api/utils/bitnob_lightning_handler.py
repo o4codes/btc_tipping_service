@@ -1,8 +1,8 @@
 from requests import HTTPError
 import requests
 from decouple import config
-from .schemas import BtcLightningPayment
-from .bitnob_base import BitnobBase
+from api.utils.schemas import BtcLightningPayment
+from api.utils.bitnob_base import BitnobBase
 
 
 class BtcLighteningHandler(BitnobBase):

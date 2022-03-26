@@ -2,8 +2,8 @@ from urllib.error import HTTPError
 from decouple import config
 import requests
 
-from .schemas import BitnobCustomer
-from .bitnob_base import BitnobBase
+from api.utils.schemas import BitnobCustomer
+from api.utils.bitnob_base import BitnobBase
 
 class BitnobCustomerHandler(BitnobBase):
     """class handles all requests to the Bitnob CustomerAPI

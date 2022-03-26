@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import User
-from .serializers import UserSerializer
-from .permissions import IsAuthenticatedOrCreate
-from utils import schemas
+from api.apps.users.models import User
+from api.apps.users.serializers import UserSerializer
+from api.apps.users.permissions import IsAuthenticatedOrCreate
+from api.utils import schemas
 
 
 class UserCreateList(APIView):

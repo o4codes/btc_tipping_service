@@ -2,8 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 import phonenumbers
 
-from utils.bitnob_customer_handler import BitnobCustomerHandler
-from utils.schemas import BitnobCustomer
+from api.utils.bitnob_customer_handler import BitnobCustomerHandler
+from api.utils.schemas import BitnobCustomer
 
 
 class UserSerializer(serializers.ModelSerializer):

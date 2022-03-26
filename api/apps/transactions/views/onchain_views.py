@@ -5,11 +5,11 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
-from utils.bitnob_lightning_handler import BtcLighteningHandler
-from utils.bitnob_onchain_handler import BtcOnChainHandler
-from transactions.serializers import OnChainTransactionSerializer
-from transactions.models import OnChainTransaction
-from utils import schemas
+from api.utils.bitnob_lightning_handler import BtcLighteningHandler
+from api.utils.bitnob_onchain_handler import BtcOnChainHandler
+from api.apps.transactions.serializers import OnChainTransactionSerializer
+from api.apps.transactions.models import OnChainTransaction
+from api.utils import schemas
 
 
 # Create your views here.

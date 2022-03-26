@@ -5,10 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Q
 
-from transactions.serializers import LightningTransactionSerializer
-from transactions.models import OnChainTransaction, LightningTransaction
-from utils.bitnob_lightning_handler import BtcLighteningHandler
-from utils import schemas
+from api.apps.transactions.serializers import LightningTransactionSerializer
+from api.apps.transactions.models import OnChainTransaction, LightningTransaction
+from api.utils.bitnob_lightning_handler import BtcLighteningHandler
+from api.utils import schemas
 
 class LightningTransactionViews(APIView):
     queryset = OnChainTransaction.objects.all()

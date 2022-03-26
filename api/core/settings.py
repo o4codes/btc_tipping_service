@@ -15,8 +15,7 @@ from pathlib import Path
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -43,8 +42,8 @@ INSTALLED_APPS = [
     # 3rd party apps
     "rest_framework",
     # local apps
-    "users.apps.UsersConfig",
-    "transactions.apps.TransactionsConfig",
+    "api.apps.users",
+    "api.apps.transactions",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +56,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "core.urls"
+ROOT_URLCONF = "api.core.urls"
 
 TEMPLATES = [
     {
@@ -75,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
+WSGI_APPLICATION = "api.core.wsgi.application"
 
 
 # Database
