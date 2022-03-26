@@ -127,6 +127,14 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         Create a new lightening transaction.
         """
         
+        sender = self.context["request"].user
+        receiver = get_user_model().objects.get(email=validated_data["receiver_email"])
+        
+        if sender.email == validated_data["receiver_email"]: # if sender and receiver are same
+            raise serializers.ValidationError("Sender and receiver cannot be the same")
+        
+        if sender.satoshis <= validated_data["btc"] * 100000000: # check if sender has enough satoshis
+            raise serializers.ValidationError("Sender does not have enough satoshis")
         
         # intialize payment object
         payment_object = schemas.BtcLightningPayment(
@@ -143,8 +151,6 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             payment_object = lightning_handler.pay_invoice(payment_object)
             response = payment_object.to_response_payload()
             
-            
-            
             lightening_transaction = LightningTransaction.objects.create(
                 btc = validated_data["btc"],
                 satoshis = response["satoshis"],
@@ -159,6 +165,7 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             validated_data.pop("receiver_email")
             
             lightening_transaction.save()
+            lightening_transaction.make_transaction() # performs transactions
             
             return lightening_transaction
         except Exception as e:

@@ -9,6 +9,7 @@ class BtcOnChainHandler:
         self.__base_url = "https://sandboxapi.bitnob.co"
         self.__onchain_btc_endpoint = "/api/v1/wallets/send_bitcoin"
         self.__transactions_endpoint = "/api/v1/transactions"
+        self.__generate_address_endpoint = "/api/v1/addresses/generate"
         self.__secret_key = config("BITNOB_SECRET_KEY")
         self.__verify_btc_onchain = "/api/v1/addresses/validate"
         self.__headers = {
@@ -17,14 +18,49 @@ class BtcOnChainHandler:
             "Accept": "application/json",
         }
 
-
-    def verify_address(self, address):
+    def verify_address(self, address) -> bool:
+        """ Verifies if btc address is valid
+        Args:
+            address (str): btc address to be verified
+            
+        Returns:
+            bool: True if address is valid, False otherwise
+            
+        Raises:
+            Exception: if request fails or if address is not found
+        """
         url = f"{self.__base_url}{self.__verify_btc_onchain}/{address}"
-        response = requests.request("GET", url, headers=self.__headers)
-        if response.status_code == 200 and response.json().get("data").get("isvalid"):
-            return True
-        raise Exception("Invalid Address")
+        try:
+            response = requests.request("GET", url, headers=self.__headers)
+            if response.status_code == 200 and response.json().get("data").get("isvalid"):
+                return True
+            raise Exception("Invalid Address")
+        except (HTTPError, ConnectionError) as e:
+            raise Exception("Request Failed due to "+str(e))
     
+    
+    def generate_address(self, customerEmail) -> str:
+        """generates new address for customer
+        
+        Args:
+            customerEmail (str): email of customer
+        
+        Returns:
+            str: new address
+            
+        Raises:
+            Exception: if request fails
+        """
+        url = f"{self.__base_url}{self.__generate_address_endpoint}"
+        data = {"customerEmail": customerEmail}
+        try:
+            response = requests.request("POST", url, headers=self.__headers, json=data)
+            if response.status_code == 200:
+                return response.json().get("data").get("address")
+            raise Exception("Invalid Address")
+        except (HTTPError, ConnectionError) as e:
+            raise Exception("Request Failed due to "+str(e))
+        
     
     def send_onchain_btc(self, payment_request: BtcOnChainPayment) -> dict:
         """sends onchain btc payment to Bitnob
@@ -72,7 +108,7 @@ class BtcOnChainHandler:
 
                 raise Exception(f"Payment Failed: {response.json()['message']}")
         except (HTTPError, ConnectionError) as e:
-            raise Exception(f"Error sending onchain btc: {e}")
+            raise Exception(f"Request Failed due to {e}")
         
     
     def get_transaction_data(self, transaction_id: str) -> dict:

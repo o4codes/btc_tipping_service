@@ -55,3 +55,11 @@ class LightningTransaction(models.Model):
 
     def __str__(self):
         return f"{self.sender.email}-{self.lightening_address}"
+
+    def make_transaction(self):
+        """
+        Make a lightning transaction.
+        """
+        self.sender.deduct_satoshis(self.satoshis)
+        self.receiver.add_satoshis(self.satoshis)
+        return 
