@@ -6,6 +6,7 @@ from .views.lightning_views import (
     )
 
 from .views.onchain_views import (
+    generate_btc_address,
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
     verify_btc_onchain_address,
@@ -14,7 +15,18 @@ from .views.onchain_views import (
 urlpatterns = [
     ######### BTC OnChain Transactions ###########
     path(
-        "on-chain/tips", 
+        'btc/onchain/address/<str:email>', 
+        generate_btc_address, 
+        name='generate_btc_address'),
+    
+    path(
+        'btc/onchain/validate/<str:address>',
+        verify_btc_onchain_address,
+        name="verify-btc-onchain-address"
+    ),
+    
+    path(
+        "btc/onchain/tips", 
         OnChainTransactionViews.as_view(), 
         name="onchain-create-list"
     ),
@@ -22,12 +34,6 @@ urlpatterns = [
         "on-chain/tips/<str:sec_id>",
         OnChainTransactionDetailView.as_view(),
         name="onchain-detail",
-    ),
-    
-    path(
-        'btc-onchain/verify/<str:address>',
-        verify_btc_onchain_address,
-        name="verify-btc-onchain-address"
     ),
     
     ############ BTC Lightning Transactions ############
@@ -44,7 +50,7 @@ urlpatterns = [
     ),
     
     path(
-        "lightning/confirm-tip/<str:sec_id>",
+        "lightning/tips/confirm/<str:sec_id>",
         receiver_confirm_btc,
         name="confirm btc transaction"
          

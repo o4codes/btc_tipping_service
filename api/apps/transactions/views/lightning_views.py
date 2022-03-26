@@ -10,6 +10,31 @@ from api.apps.transactions.models import OnChainTransaction, LightningTransactio
 from api.utils.bitnob_lightning_handler import BtcLighteningHandler
 from api.utils import schemas
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated,])
+def verify_lightening_address(request, lightening_request):
+    try:
+        bitnob_lightening = BtcLighteningHandler()
+        response = bitnob_lightening.initiate_request(lightening_request)
+        if response:
+            data = {
+                "is_valid": True,
+                "message": "Payment Request is valid",
+            }
+            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
+        
+        else: 
+            data = {
+                "is_valid": False,
+                "message": "Payment Request is invalid",
+            }
+            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
+            
+    except Exception as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
+        )
+
 class LightningTransactionViews(APIView):
     queryset = OnChainTransaction.objects.all()
     serializer_class = LightningTransactionSerializer
