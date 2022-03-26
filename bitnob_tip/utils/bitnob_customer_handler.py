@@ -1,21 +1,16 @@
 from urllib.error import HTTPError
-from .schemas import BitnobCustomer
 from decouple import config
 import requests
 
-class BitnobCustomerHandler:
+from .schemas import BitnobCustomer
+from .bitnob_base import BitnobBase
+
+class BitnobCustomerHandler(BitnobBase):
     """class handles all requests to the Bitnob CustomerAPI
     """
 
     def __init__(self) -> None:
-        self.__base_url = "https://sandboxapi.bitnob.co"
         self.__customer_endpoint = "/api/v1/customers"
-        self.__secret_key = config("BITNOB_SECRET_KEY")
-        self.__headers = {
-            "Authorization": f"Bearer {self.__secret_key}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
 
     def create_customer(self, customer: BitnobCustomer) -> dict:
         """creates a customer in Bitnob
@@ -49,12 +44,12 @@ class BitnobCustomerHandler:
             Exception: if connection fails
         """
 
-        url = f"{self.__base_url}{self.__customer_endpoint}"
+        url = f"{self.base_url}{self.__customer_endpoint}"
 
         data = customer.to_request_payload()
 
         try:
-            response = requests.post(url, json=data, headers=self.__headers)
+            response = requests.post(url, json=data, headers=self.headers)
 
             if response.status_code == 200:
                 return response.json()["data"]
@@ -62,4 +57,4 @@ class BitnobCustomerHandler:
             raise Exception(f"Creation Error: {response.json()['message']}")
 
         except (HTTPError, ConnectionError) as e:
-            raise Exception(f"Error creating customer: {e}")
+            raise Exception(f"Request Failed due to: {e}")

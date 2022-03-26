@@ -2,21 +2,18 @@ from urllib.error import HTTPError
 import requests
 from .schemas import BtcOnChainPayment
 from decouple import config
+from .bitnob_base import BitnobBase
 
 
-class BtcOnChainHandler:
+class BtcOnChainHandler(BitnobBase):
+    """ class handles onchain btc payment 
+    """
     def __init__(self):
-        self.__base_url = "https://sandboxapi.bitnob.co"
+        super().__init__()
         self.__onchain_btc_endpoint = "/api/v1/wallets/send_bitcoin"
         self.__transactions_endpoint = "/api/v1/transactions"
         self.__generate_address_endpoint = "/api/v1/addresses/generate"
-        self.__secret_key = config("BITNOB_SECRET_KEY")
         self.__verify_btc_onchain = "/api/v1/addresses/validate"
-        self.__headers = {
-            "Authorization": f"Bearer {self.__secret_key}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
 
     def verify_address(self, address) -> bool:
         """ Verifies if btc address is valid
@@ -29,9 +26,9 @@ class BtcOnChainHandler:
         Raises:
             Exception: if request fails or if address is not found
         """
-        url = f"{self.__base_url}{self.__verify_btc_onchain}/{address}"
+        url = f"{self.base_url}{self.__verify_btc_onchain}/{address}"
         try:
-            response = requests.request("GET", url, headers=self.__headers)
+            response = requests.request("GET", url, headers=self.headers)
             if response.status_code == 200 and response.json().get("data").get("isvalid"):
                 return True
             raise Exception("Invalid Address")
@@ -51,10 +48,10 @@ class BtcOnChainHandler:
         Raises:
             Exception: if request fails
         """
-        url = f"{self.__base_url}{self.__generate_address_endpoint}"
+        url = f"{self.base_url}{self.__generate_address_endpoint}"
         data = {"customerEmail": customerEmail}
         try:
-            response = requests.request("POST", url, headers=self.__headers, json=data)
+            response = requests.request("POST", url, headers=self.headers, json=data)
             if response.status_code == 200:
                 return response.json().get("data").get("address")
             raise Exception("Invalid Address")
@@ -90,13 +87,13 @@ class BtcOnChainHandler:
             Exception: if payment request fails
             Exception: if connection fails
         """
-        url = f"{self.__base_url}{self.__onchain_btc_endpoint}"
+        url = f"{self.base_url}{self.__onchain_btc_endpoint}"
 
         data = payment_request.to_reqeust_payload()
 
         try:
             if self.verify_address(data["address"]):
-                response = requests.post(url, json=data, headers=self.__headers)
+                response = requests.post(url, json=data, headers=self.headers)
 
                 if response.status_code == 200:
                     response_data = response.json()["data"]
@@ -131,16 +128,10 @@ class BtcOnChainHandler:
             Exception: if trasnation is not found
         """
 
-        url = f"{self.__base_url}{self.__transactions_endpoint}/{transaction_id}"
-
-        headers = {
-            "Authorization": f"Bearer {self.__secret_key}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
+        url = f"{self.base_url}{self.__transactions_endpoint}/{transaction_id}"
 
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=self.headers)
             if response.status_code == 200:
                 response_data = response.json()["data"]
 
