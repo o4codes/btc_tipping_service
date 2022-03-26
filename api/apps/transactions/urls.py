@@ -30,6 +30,7 @@ urlpatterns = [
         OnChainTransactionViews.as_view(), 
         name="onchain-create-list"
     ),
+    
     path(
         "on-chain/tips/<str:sec_id>",
         OnChainTransactionDetailView.as_view(),

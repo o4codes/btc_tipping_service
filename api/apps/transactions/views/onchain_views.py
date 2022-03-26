@@ -104,19 +104,20 @@ class OnChainTransactionDetailView(APIView):
     def get(self, request, sec_id, format=None):
         try:
             transaction = OnChainTransaction.objects.get(sec_id=sec_id, sender=request.user)
-            serializer = OnChainTransactionSerializer(transaction)
-            data = serializer.data
 
             if transaction.status == "pending":
                 onchain_handler = BtcOnChainHandler()
                 response = onchain_handler.get_transaction_data(data["bitnob_id"])
-                data["status"] = response["status"]
-
-                serializer = OnChainTransactionSerializer(
-                    transaction, data=data, partial=True
-                )
-                if serializer.is_valid():
-                    serializer.save()
+                
+                if response["status"] == "success" and transaction.status != "success":
+                    receiver = transaction.receiver
+                    receiver.add_satoshis(transaction.satoshis) # add satoshis to receiver
+                    
+                transaction.status = response["status"]
+                transaction.save() # update status
+                
+                serializer = OnChainTransactionSerializer(transaction)
+                data = serializer.data
                     
             return Response(
                 schemas.ResponseData.success(data), status=status.HTTP_200_OK

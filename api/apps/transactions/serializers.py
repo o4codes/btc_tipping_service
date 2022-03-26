@@ -1,3 +1,4 @@
+from urllib import request
 from django.dispatch import receiver
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
@@ -42,6 +43,10 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
         """
         Create a new on-chain transaction.
         """
+        
+        sender = request.user
+        satoshis = validated_data.get("btc") * 100000000
+        
         # intialize payment object
         payment_object = schemas.BtcOnChainPayment(
             btc_amount=validated_data["btc"],
@@ -51,6 +56,10 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
         )
 
         try:
+            
+            if sender.satoshis <= satoshis:
+                raise serializers.ValidationError("Inadequate Satoshis balance to proceed")
+            
             onchain_handler = BtcOnChainHandler()
             response = onchain_handler.send_onchain_btc(
                 payment_object
@@ -67,7 +76,9 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
                 status=response["status"],
             )
 
-            on_chain_transaction.save()
+            on_chain_transaction.save() # save transaction
+            
+            sender.deduct_satoshis(satoshis) # deduct satoshis from sender and sace
             return on_chain_transaction
 
         except Exception as e:
