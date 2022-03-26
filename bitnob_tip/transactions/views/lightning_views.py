@@ -93,7 +93,7 @@ def receiver_confirm_btc(request, sec_id):
             bitnob_lightening = BtcLighteningHandler()
             response = bitnob_lightening.get_transaction_data(transaction.bitnob_id)
             transaction.status = response["status"]
-            transaction.is_receiver_confirmed = True
+            transaction.is_received = True
             transaction.save()
         
             data = {
@@ -104,8 +104,8 @@ def receiver_confirm_btc(request, sec_id):
             )
             
         elif transaction.status == "success":
-            if transaction.is_receiver_confirmed != True:
-                transaction.is_receiver_confirmed = True
+            if transaction.is_received != True:
+                transaction.is_received = True
                 transaction.save()
                 
                 data = {

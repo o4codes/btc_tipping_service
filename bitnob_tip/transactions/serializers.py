@@ -93,7 +93,7 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             'receiver',
             "status",
             "bitnob_id",
-            "is_receiver_confirmed",
+            "is_received",
             "created_at",
             "updated_at",
         )
@@ -105,7 +105,7 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             'receiver',
             "reference",
             "sender",
-            "is_receiver_confirmed",
+            "is_received",
             "created_at",
             "updated_at",
             
