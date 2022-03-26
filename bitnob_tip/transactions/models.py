@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -15,6 +16,9 @@ class OnChainTransaction(models.Model):
     receiving_address = models.CharField(max_length=100, null=False, blank=False)
     sender = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_sender",
+    )
+    receiver = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_receiver",
     )
     description = models.CharField(max_length=100, null=False, blank=False)
     priority_level = models.CharField(max_length=100, null=False, blank=False)

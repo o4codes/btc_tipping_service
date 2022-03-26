@@ -51,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(
         validators=[phone_regex], max_length=17, blank=False, null=False
     )
+    satoshis = models.BigIntegerField(null=False, blank=False, default=1000)
     first_name = models.CharField(verbose_name="first name", max_length=30, blank=False)
     last_name = models.CharField(verbose_name="last name", max_length=30, blank=False)
     is_active = models.BooleanField(verbose_name="active", default=False)

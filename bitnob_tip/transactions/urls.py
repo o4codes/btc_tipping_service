@@ -1,14 +1,18 @@
 from django.urls import path, include
-from .views import (
-    OnChainTransactionViews, 
-    OnChainTransactionDetailView,
-    verify_btc_onchain_address,
-    LighteningTransactionViews,
-    LighteningDetailsView,
+from views.lightning_views import (
+    LightningTransactionViews,
+    LightningDetailsView,
     receiver_confirm_btc_lightening
     )
 
+from views.onchain_views import (
+    OnChainTransactionViews, 
+    OnChainTransactionDetailView,
+    verify_btc_onchain_address,
+)
+
 urlpatterns = [
+    ######### BTC OnChain Transactions ###########
     path(
         "on-chain/tips", 
         OnChainTransactionViews.as_view(), 
@@ -26,21 +30,21 @@ urlpatterns = [
         name="verify-btc-onchain-address"
     ),
     
-    
+    ############ BTC Lightning Transactions ############
     path(
-        "lightening/tips",
-        LighteningTransactionViews.as_view(),
+        "lightning/tips",
+        LightningTransactionViews.as_view(),
         name = "lightening-create-list"
     ),
     
     path(
-        "lightening/tips/<str:sec_id>",
-        LighteningDetailsView.as_view(),
+        "lightning/tips/<str:sec_id>",
+        LightningDetailsView.as_view(),
         name="lightening-detail",
     ),
     
     path(
-        "lightening/confirm-tip/<str:sec_id>",
+        "lightning/confirm-tip/<str:sec_id>",
         receiver_confirm_btc_lightening,
         name="confirm btc transaction"
          
