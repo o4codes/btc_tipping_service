@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 from api.utils.bitnob_onchain_handler import BtcOnChainHandler
 from api.apps.transactions.serializers import OnChainTransactionSerializer
-from api.apps.transactions.models import OnChainTransaction
+from api.apps.transactions.models import OnChainTransaction, OnchainAddress
 from api.utils import schemas
 
 
@@ -20,6 +20,10 @@ def generate_btc_address(request, email):
         user = get_user_model().objects.get(email=email)
         onchain_handler = BtcOnChainHandler()
         response = onchain_handler.generate_address(user.email)
+        
+        address_obj = OnchainAddress(user=user, address=response["address"])
+        address_obj.save()
+        
         data = {"email":email, "address": response["address"]}
         return Response(
             schemas.ResponseData.success(data), status=status.HTTP_200_OK
@@ -36,7 +40,7 @@ def generate_btc_address(request, email):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def verify_btc_onchain_address(request, address):
+def validate_btc_onchain_address(request, address):
     """ Verifies if a bitcoin address is valid.
     """
     try:
@@ -45,6 +49,12 @@ def verify_btc_onchain_address(request, address):
         return Response(
             schemas.ResponseData.success({"message":"Address is valid"}), status=status.HTTP_200_OK
         )
+    
+    except ValueError as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_200_OK
+        )
+        
     except Exception as e:
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST

@@ -9,7 +9,7 @@ from .views.onchain_views import (
     generate_btc_address,
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
-    verify_btc_onchain_address,
+    validate_btc_onchain_address
 )
 
 urlpatterns = [
@@ -21,7 +21,7 @@ urlpatterns = [
     
     path(
         'btc/onchain/validate/<str:address>',
-        verify_btc_onchain_address,
+        validate_btc_onchain_address,
         name="verify-btc-onchain-address"
     ),
     

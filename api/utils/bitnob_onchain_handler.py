@@ -31,7 +31,7 @@ class BtcOnChainHandler(BitnobBase):
             response = requests.request("GET", url, headers=self.headers)
             if response.status_code == 200 and response.json().get("data").get("isvalid"):
                 return True
-            raise Exception("Invalid Address")
+            raise ValueError("Invalid Address")
         except (HTTPError, ConnectionError) as e:
             raise Exception("Request Failed due to "+str(e))
     
