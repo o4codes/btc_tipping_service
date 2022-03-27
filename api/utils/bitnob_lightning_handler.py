@@ -10,88 +10,80 @@ class BtcLighteningHandler(BitnobBase):
     """
 
     def __init__(self) -> None:
-        self.__lightining_invoice_creation = "/api/v1/wallets/ln/createinvoice"
-        self.__lightning_initiate_payment = "/api/v1/wallets/ln/initiatepayment"
-        self.__lightning_pay_invoice = "/api/v1/wallets/ln/pay"
+        super().__init__()
+        self.__validate_ln_address = "/api/v1/lnurl/decodelnaddress"
+        self.__pay_ln_address = "/api/v1/lnurl/paylnaddress"
         self.__transactions_endpoint = "/api/v1/transactions"
 
-
-    def create_invoice(self, payment_request: BtcLightningPayment) -> BtcLightningPayment:
-        """ Receiver creates a lightning invoice
-
+    
+    def verify_lightning_address(self, lnAddress: str) -> bool:
+        """ Verifies a lightning address to for validity
+        
         Args:
-            payment_request (BtcLightningPayment): payment request to be sent to Bitnob
+            address (str): address to be verified
 
         Returns:
-            payment_request (BtcLightningPayment): data returned as object from Bitnob
+            Dict: response from Btinob with details about the address
+            Sample {
+                    "image": "",
+                    "identifier": "fiatjaf@dollar.lol",
+                    "description": "Satoshis to fiatjaf@dollar.lol.",
+                    "callback": "https://dollar.lol/.well-known/lnurlp/fiatjaf",
+                    "commentAllowed": 0,
+                    "satMinSendable": 1,
+                    "satMaxSendable": 100000
+                    }
+        Raises:
+            Exception: if request fails
+        """
+        
+        url = f"{self.base_url}{self.__validate_ln_address}"
+        data = {"lnAddress": lnAddress}
+        try:
+            response = requests.post(url, json=data, headers=self.headers)
+            if response.status_code == 200:
+                return response.json()['data']
+            raise Exception("LnAddress not valid")
+        except (HTTPError, ConnectionError) as e:
+            raise Exception("Request Failed due to " + str(e))
+        
+    
+    def pay_lightning_address(self, lightning_payment: BtcLightningPayment) -> dict:
+        """sends payment to lightning address
+        
+        Args:
+            lightning_payment (BtcLightningPayment): payment details
+        
+        Returns:
+            Dict: response from Btinob with details about the address
             
         Raises:
             Exception: if request fails
         """
-        url = f"{self.base_url}{self.__lightining_invoice_creation}"
-        data = payment_request.to_create_invoice_request_payload()
+        
+        url = f"{self.base_url}{self.__pay_ln_address}"
+        data = lightning_payment.to_request_payload()
         try:
+            verify_data = self.verify_lightning_address(data["lnAddress"])
+            if data['satoshis'] > verify_data['satMaxSendable']:
+                raise Exception("Amount is larger than maximum sendable")
+            
+            if data['satoshis'] < verify_data['satMinSendable']:
+                raise Exception("Amount is smaller than minimum sendable")
+            
             response = requests.post(url, json=data, headers=self.headers)
+            data = response.json()
             if response.status_code == 200:
-                request = response.json()["data"]["request"]
-                payment_request.set_request(request)
-                return payment_request
-            raise Exception("Error creating invoice: " + response.text)
-        except (HTTPError, ConnectionError) as e:
-            raise Exception("Request Failed due to " + str(e))
-    
-    
-    def initiate_request(self, payment_request: BtcLightningPayment) -> bool:
-        """ Used to verify payment request by sender
-
-        Args:
-            payment_request (BtcLightningPayment): payment request to be sent to Bitnob
-
-        Returns:
-            bool: True if payment is valid, False otherwise
-        
-        Raises:
-            Exception: if request fails or response is not 200
-        """
-        url = f"{self.base_url}{self.lightning_initiate_payment}"
-        data = payment_request.to_initiate_paymnet_request_payload() # get request payload
-        try:
-            response = requests.post(url, json=data, headers=self.headers)
-            if response.status_code != 200:
-                raise Exception("Error initiating payment: " + response.text)
+                if data['data']['status'] == "ERROR":
+                    raise Exception(data['data']['message'])
+                
+                return data['data']
             
-            if response.json()["data"]["isExpired"] == False:
-                return True
-            return False
-            
+            raise Exception(f"{data['message']}")
         except (HTTPError, ConnectionError) as e:
-            raise Exception("Request Failed due to " + str(e))
+            raise Exception(f"Request Failed due to {e}")
         
-        
-    def pay_invoice(self, payment_request: BtcLightningPayment) -> BtcLightningPayment:
-        """ Sender pays invoice
-
-        Args:
-            payment_request (BtcLightningPayment): payment request to be sent to Bitnob
-
-        Returns:
-            payment_request (BtcLightningPayment): data returned as object from Bitnob
-            
-        Raises:
-            Exception: if request fails
-        """
-        url = f"{self.base_url}{self.__lightning_pay_invoice}"
-        data = payment_request.to_invoice_request_payment()
-        try:
-            response = requests.post(url, json=data, headers=self.headers)
-            if response.status_code == 200:
-                payment_request.set_id(response.json()["data"]["id"])
-                return payment_request
-            raise Exception("Error paying invoice: " + response.text)
-        except (HTTPError, ConnectionError) as e:
-            raise Exception("Request Failed due to: " + str(e))
     
-      
     def get_transaction_data(self, transaction_id: str) -> dict:
         """gets transaction status from Bitnob
 

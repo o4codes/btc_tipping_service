@@ -97,60 +97,37 @@ class BtcLightningPayment:
         btc_amount: float,
         description: str,
         sender_email: str,
-        receiver_email: str,
+        ln_address: str,
     ):
 
         self.__description = description
         self.__sender_email = sender_email
-        self.__receiver_email = receiver_email
+        self.__ln_address = ln_address
         self.__satoshis = btc_amount * 100000000
-        self.__reference = uuid4()
-        self.__request = None
         self.__id = None
-        
-    def set_request(self, request: str) -> None:
-        """Set reference for lightning btc payment
+        self.__reference = str(uuid4())
+   
+    def to_request_payload(self) -> dict:
+        """ Request of all requests
         """
-        self.__request = request
-    
-    def set_id(self, id: str) -> None:
-        """Set id for lightning btc payment"""
-        self.__id = id
-
-
-    def to_create_invoice_request_payload(self) -> dict:
-        """Return dict representation of lightning btc payment"""
         return {
+            "reference": self.__reference,
             "satoshis": self.__satoshis,
-            "description": self.__description,
-            "customerEmail": self.__receiver_email,
-        }
-    
-    def to_initiate_paymnet_request_payload(self) -> dict:
-        """Return dict representation of lightning btc payment"""
-        return {
-            "request": self.__request
-        }
-        
-    def to_invoice_request_payment(self) -> dict:
-        """Return dict representation of lightning btc payment"""
-        return {
-            "request": self.__request,
-            "reference": str(self.__reference),
-            "customerEmail": self.__sender_email,
-        }
-        
+            "senderEmail": self.__sender_email,
+            "lnAddress": self.__ln_address,
+        } 
+     
     def to_response_payload(self) -> dict:
         """ Response of all requests
         """
         return {
             "id": self.__id,
             "reference": self.__reference,
-            "request": self.__request,
             "btcAmount": self.__satoshis / 100000000,
             'satoshis': self.__satoshis,
             "senderEmail": self.__sender_email,
-            "receiverEmail": self.__receiver_email,
+            "description": self.__description,
+            "lnAddress": self.__ln_address,
             "status": "pending",
         }
 

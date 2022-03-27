@@ -18,9 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "phone",
             "country_code",
+            "satoshis",
             "password",
         )
-        read_only_fields = ("id", "bitnob_id")
+        read_only_fields = ("id", "bitnob_id","satoshis")
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, data):
@@ -42,11 +43,14 @@ class UserSerializer(serializers.ModelSerializer):
             countryCode=validated_data.get("country_code"),
             email=validated_data.get("email"),
         )
-
+        
         try:
-            bitnob_response = BitnobCustomerHandler().create_customer(customer)
-
+            # creates customer in bitnob
+            bitnob_response = BitnobCustomerHandler().create_customer(customer) 
+            
             validated_data["bitnob_id"] = bitnob_response["id"]
+            
+            # creates a user in django
             user = get_user_model().objects.create_user(**validated_data)
             return user
 

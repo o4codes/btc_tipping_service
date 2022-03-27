@@ -25,8 +25,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/token", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/v1/token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/v1/users/", include("api.apps.users.urls")),
+    path("api/v1/", include("api.apps.users.urls")),
     path("api/v1/", include("api.apps.transactions.urls")),
-    path("api/v1/webhook/", webhook, name="webhook"),
-    path("api/v1/health/", status_check, name="status_check"),
+    path("api/v1/webhook", webhook, name="webhook"),
+    path("api/v1/health", status_check, name="status_check"),
 ]

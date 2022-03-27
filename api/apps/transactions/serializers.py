@@ -1,4 +1,3 @@
-from urllib import request
 from django.dispatch import receiver
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
@@ -13,6 +12,7 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
     """
     Serializer for on-chain transactions.
     """
+    
     id = serializers.UUIDField(read_only=True, source="sec_id")
     class Meta:
         model = OnChainTransaction
@@ -39,12 +39,26 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
             "updated_at",
         )
 
+    def validate(self, data):
+        """ validate serializer
+        """
+        
+        receiving_address = data.get("receiving_address")
+        onchain_handler = BtcOnChainHandler()
+        try:
+            onchain_handler.verify_address(receiving_address) # checks if address is valid
+        except Exception as e:
+            raise serializers.ValidationError(schemas.ResponseData.error(e))
+        
+        return data
+        
+    
     def create(self, validated_data):
         """
         Create a new on-chain transaction.
         """
         
-        sender = request.user
+        sender = self.context["request"].user
         satoshis = validated_data.get("btc") * 100000000
         
         # intialize payment object
@@ -52,15 +66,16 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
             btc_amount=validated_data["btc"],
             address=validated_data["receiving_address"],
             customer_email=self.context["request"].user.email,
-            description=validated_data["description"],
+            description=validated_data.get("description"),
         )
 
         try:
-            
             if sender.satoshis <= satoshis:
-                raise serializers.ValidationError("Inadequate Satoshis balance to proceed")
+                raise serializers.ValidationError(schemas.ResponseData.error("Inadequate Satoshis to send"))
             
+            # gets user assigned to the receiving address
             onchain_handler = BtcOnChainHandler()
+            onchain_handler.verify_address(validated_data["receiving_address"])
             response = onchain_handler.send_onchain_btc(
                 payment_object
             )  # perform on-chain payment
@@ -77,8 +92,6 @@ class OnChainTransactionSerializer(serializers.ModelSerializer):
             )
 
             on_chain_transaction.save() # save transaction
-            
-            sender.deduct_satoshis(satoshis) # deduct satoshis from sender and sace
             return on_chain_transaction
 
         except Exception as e:
@@ -90,18 +103,17 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
     Serializer for lightning transactions.
     """
     id = serializers.UUIDField(read_only=True, source="sec_id")
-    receiver_email = serializers.EmailField(write_only=True)
+
     class Meta:
         model = LightningTransaction
         fields = (
             "id",
             "btc",
+            "lnAddress",
             "satoshis",
             "reference",
             "description",
             "sender",
-            "receiver_email",
-            'receiver',
             "status",
             "bitnob_id",
             "is_received",
@@ -113,7 +125,6 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             "bitnob_id",
             "satoshis",
             "status",
-            'receiver',
             "reference",
             "sender",
             "is_received",
@@ -122,16 +133,6 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             
         )
         
-        write_only_fields = ("receiver_email",)
-    
-    def validate(self, data):
-        """
-        Validate the data.
-        """
-        if get_user_model().objects.filter(email=data["receiver_email"]).count() == 0:
-            raise serializers.ValidationError("Reciever account does not exist")
-        
-        return data
     
     def create(self, validated_data):
         """
@@ -139,10 +140,6 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         """
         
         sender = self.context["request"].user
-        receiver = get_user_model().objects.get(email=validated_data["receiver_email"])
-        
-        if sender.email == validated_data["receiver_email"]: # if sender and receiver are same
-            raise serializers.ValidationError("Sender and receiver cannot be the same")
         
         if sender.satoshis <= validated_data["btc"] * 100000000: # check if sender has enough satoshis
             raise serializers.ValidationError("Sender does not have enough satoshis")
@@ -152,14 +149,12 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
             btc_amount=validated_data["btc"],
             description=validated_data["description"],
             sender_email=self.context["request"].user.email,
-            receiver_email=validated_data["receiver_email"]
+            ln_address=validated_data["lnAddress"],
         )
-        
         
         try:
             lightning_handler = BtcLighteningHandler()
-            payment_object = lightning_handler.create_invoice(payment_object)
-            payment_object = lightning_handler.pay_invoice(payment_object)
+            lightning_handler.pay_lightning_address(payment_object) # perform lightning payment
             response = payment_object.to_response_payload()
             
             lightening_transaction = LightningTransaction.objects.create(
@@ -167,16 +162,13 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
                 satoshis = response["satoshis"],
                 reference = response["reference"],
                 sender = self.context["request"].user,
-                receiver = get_user_model().objects.get(email=validated_data["receiver_email"]),
+                lnAdress = response["lnAddress"],
                 status = response["status"],
-                payment_request = response["request"],
                 bitnob_id = response["id"],
+                description = validated_data["description"]
             )
             
-            validated_data.pop("receiver_email")
-            
-            lightening_transaction.save()
-            lightening_transaction.make_transaction() # performs transactions
+            lightening_transaction.save() # save transaction
             
             return lightening_transaction
         except Exception as e:

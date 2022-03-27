@@ -1,24 +1,20 @@
 from django.urls import path, include
 from .views.lightning_views import (
+    validate_lightning_address,
     LightningTransactionViews,
     LightningDetailsView,
     receiver_confirm_btc
     )
 
 from .views.onchain_views import (
-    generate_btc_address,
+    validate_btc_onchain_address,
     OnChainTransactionViews, 
     OnChainTransactionDetailView,
-    validate_btc_onchain_address
+    confirm_receive_btc
 )
 
 urlpatterns = [
     ######### BTC OnChain Transactions ###########
-    path(
-        'btc/onchain/address/<str:email>', 
-        generate_btc_address, 
-        name='generate_btc_address'),
-    
     path(
         'btc/onchain/validate/<str:address>',
         validate_btc_onchain_address,
@@ -26,32 +22,44 @@ urlpatterns = [
     ),
     
     path(
-        "btc/onchain/tips", 
+        "btc/onchain", 
         OnChainTransactionViews.as_view(), 
         name="onchain-create-list"
     ),
     
     path(
-        "on-chain/tips/<str:sec_id>",
+        "btc/onchain/<str:sec_id>",
         OnChainTransactionDetailView.as_view(),
         name="onchain-detail",
     ),
     
+    path(
+        "btc/onchain/confirm/<str:txid>/address/<str:address>",
+        confirm_receive_btc,
+        name = "confirm-receive-btc"
+    ),
+    
     ############ BTC Lightning Transactions ############
     path(
-        "lightning/tips",
+        "btc/lightning/validate/<str:address>",
+        validate_lightning_address,
+        name="verify-lightning-address"
+        ),
+    
+    path(
+        "btc/lightning",
         LightningTransactionViews.as_view(),
         name = "lightening-create-list"
     ),
     
     path(
-        "lightning/tips/<str:sec_id>",
+        "btc/lightning/<str:txid>",
         LightningDetailsView.as_view(),
         name="lightening-detail",
     ),
     
     path(
-        "lightning/tips/confirm/<str:sec_id>",
+        "btc/lightning/confirm/<str:txid>",
         receiver_confirm_btc,
         name="confirm btc transaction"
          

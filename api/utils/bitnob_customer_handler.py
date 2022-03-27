@@ -10,6 +10,7 @@ class BitnobCustomerHandler(BitnobBase):
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self.__customer_endpoint = "/api/v1/customers"
 
     def create_customer(self, customer: BitnobCustomer) -> dict:

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Q
 
@@ -10,30 +10,23 @@ from api.apps.transactions.models import OnChainTransaction, LightningTransactio
 from api.utils.bitnob_lightning_handler import BtcLighteningHandler
 from api.utils import schemas
 
+
 @api_view(["GET"])
-@permission_classes([IsAuthenticated,])
-def verify_lightening_address(request, lightening_request):
+@permission_classes([IsAuthenticated])
+def validate_lightning_address(request, address):
+    """ validates a lightning address
+    """
     try:
-        bitnob_lightening = BtcLighteningHandler()
-        response = bitnob_lightening.initiate_request(lightening_request)
-        if response:
-            data = {
-                "is_valid": True,
-                "message": "Payment Request is valid",
-            }
-            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
-        
-        else: 
-            data = {
-                "is_valid": False,
-                "message": "Payment Request is invalid",
-            }
-            return Response(schemas.ResponseData.success(data), status=status.HTTP_200_OK)
-            
+        lightning_handler = BtcLighteningHandler()
+        data = lightning_handler.verify_lightning_address(address)
+        return Response(
+            schemas.ResponseData.success(data), status=status.HTTP_200_OK
+        )
     except Exception as e:
         return Response(
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
         )
+    
 
 class LightningTransactionViews(APIView):
     queryset = OnChainTransaction.objects.all()
@@ -41,6 +34,8 @@ class LightningTransactionViews(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
+        """ Create a new lightning transaction
+        """
         serializer = LightningTransactionSerializer(
             data=request.data, context={"request": request}
         )
@@ -56,8 +51,10 @@ class LightningTransactionViews(APIView):
         )
 
     def get(self, request, format=None):
+        """ Gets all lightning transactions for logged in user
+        """
         try:
-            transactions = LightningTransaction.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+            transactions = LightningTransaction.objects.filter(sender=request.user)
             
             serializer = LightningTransactionSerializer(transactions, many=True)
                 
@@ -74,27 +71,24 @@ class LightningDetailsView(APIView):
     serializer_class = LightningTransactionSerializer
     permission_classes = (IsAuthenticated,)
     
-    def get(self, request, sec_id, format=None):
+    def get(self, request, txid, format=None):
         """ Get details of a lightning transaction 
         """
         try:
-            transactions = LightningTransaction.objects.filter(Q(sec_id=sec_id) & (Q(sender=request.user) | Q(receiver=request.user)))
+            transaction = LightningTransaction.objects.get(Q(sec_id=txid) & Q(sender=request.user))
             
-            # transaction = LightningTransaction.objects.get(sec_id=sec_id, sender=request.user)
-            serializer = LightningTransactionSerializer(transactions, many=True)
-            data = serializer.data
-            
-            if data == []:
-                raise LightningTransaction.DoesNotExist
-            
-            if data[0]['status'] == "pending":
+            if transaction.status == "pending":
                 bitnob_lightening = BtcLighteningHandler()
-                response = bitnob_lightening.get_transaction_data(data[0]["bitnob_id"])
-                transactions[0].status = response['status']
-                transactions[0].save()
+                response = bitnob_lightening.get_transaction_data(transaction.bitnob_id) # retrieves details of trnsaction from bitnob
+                if response["status"] == "success":
+                    transaction.make_transaction()
+                transaction.status = response['status']
+                transaction.save() # updates status of transaction
+                
+            serializer = LightningTransactionSerializer(transaction)
                 
             return Response(
-                schemas.ResponseData.success(data[0]), status=status.HTTP_200_OK
+                schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
             )
         except LightningTransaction.DoesNotExist as e:
             return Response(
@@ -106,13 +100,13 @@ class LightningDetailsView(APIView):
             )
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated,])
-def receiver_confirm_btc(request, sec_id):
+@api_view(["PUT"])
+@permission_classes([AllowAny])
+def receiver_confirm_btc(request, txid, address):
     """ Endpoint for receiver to confirm if payment is successful
     """
     try:
-        transaction = LightningTransaction.objects.get(sec_id=sec_id, receiver=request.user)
+        transaction = LightningTransaction.objects.get(sec_id=txid, lnAddress=address)
         
         if transaction.status == "pending":
             bitnob_lightening = BtcLighteningHandler()
@@ -133,31 +127,24 @@ def receiver_confirm_btc(request, sec_id):
                 transaction.is_received = True
                 transaction.save()
                 
-                data = {
-                    "message": "BTC payment confirmed",
-                }
+                data = {"message": "BTC payment confirmed"}
                 
                 return Response(
                     schemas.ResponseData.success(data), status=status.HTTP_200_OK
                 )
             
-            data = {
-                    "message": "BTC payment already confirmed",
-                }
+            data = {"message": "BTC payment already confirmed"}
                 
             return Response(
                 schemas.ResponseData.success(data), status=status.HTTP_200_OK
             )
             
         else:
-            data = {
-                "message": "BTC payment failed",
-            }
+            data = {"message": "BTC payment failed"}
             return Response(
                 schemas.ResponseData.success(data), status=status.HTTP_200_OK
             )
     
-            
     except LightningTransaction.DoesNotExist as e:
         return Response(
             schemas.ResponseData.error("Transaction does not exist"), status=status.HTTP_404_NOT_FOUND

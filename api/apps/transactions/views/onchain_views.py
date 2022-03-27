@@ -1,41 +1,16 @@
+import re
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
+from django.db.models import Q
 
 from api.utils.bitnob_onchain_handler import BtcOnChainHandler
 from api.apps.transactions.serializers import OnChainTransactionSerializer
-from api.apps.transactions.models import OnChainTransaction, OnchainAddress
+from api.apps.transactions.models import OnChainTransaction
 from api.utils import schemas
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def generate_btc_address(request, email):
-    """ Generates BTC address for the presently logged in user
-    """
-    try:
-        user = get_user_model().objects.get(email=email)
-        onchain_handler = BtcOnChainHandler()
-        response = onchain_handler.generate_address(user.email)
-        
-        address_obj = OnchainAddress(user=user, address=response["address"])
-        address_obj.save()
-        
-        data = {"email":email, "address": response["address"]}
-        return Response(
-            schemas.ResponseData.success(data), status=status.HTTP_200_OK
-        )
-    except get_user_model().DoesNotExist as e:
-        return Response(
-            schemas.ResponseData.error("User with email does not exist"), status=status.HTTP_404_NOT_FOUND
-        )
-    except Exception as e:
-        return Response(
-            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
-        )
 
 
 @api_view(["GET"])
@@ -45,7 +20,7 @@ def validate_btc_onchain_address(request, address):
     """
     try:
         onchain_handler = BtcOnChainHandler()
-        response = onchain_handler.verify_address(address)
+        onchain_handler.verify_address(address)
         return Response(
             schemas.ResponseData.success({"message":"Address is valid"}), status=status.HTTP_200_OK
         )
@@ -60,6 +35,36 @@ def validate_btc_onchain_address(request, address):
             schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
         )
 
+
+@api_view(["PUT"])
+@permission_classes([AllowAny])
+def confirm_receive_btc(request, txid, address):
+    """ Confirms a received bitcoin transaction
+    """
+    try:
+        if OnChainTransaction.objects.filter(sec_id=txid, receiving_address=address).exists():
+            transaction = OnChainTransaction.objects.get(sec_id=txid, receiving_address=address)
+            if transaction.is_received == False:
+                transaction.is_received = True
+                transaction.save()
+                return Response(
+                    schemas.ResponseData.success({"message":"Transaction confirmed"}), status=status.HTTP_200_OK
+                )
+                
+            return Response(
+                schemas.ResponseData.success({"message":"Transaction already confirmed"}), status=status.HTTP_200_OK
+            )
+            
+        raise Exception("Transaction does not exist")
+    except ValueError as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_200_OK
+        )
+        
+    except Exception as e:
+        return Response(
+            schemas.ResponseData.error(str(e)), status=status.HTTP_400_BAD_REQUEST
+        )
 
 # Create your views here.
 class OnChainTransactionViews(APIView):
@@ -103,22 +108,20 @@ class OnChainTransactionDetailView(APIView):
 
     def get(self, request, sec_id, format=None):
         try:
-            transaction = OnChainTransaction.objects.get(sec_id=sec_id, sender=request.user)
+            transaction = OnChainTransaction.objects.get(Q(sec_id=sec_id) & Q(sender=request.user))
 
             if transaction.status == "pending":
                 onchain_handler = BtcOnChainHandler()
-                response = onchain_handler.get_transaction_data(data["bitnob_id"])
-                
-                if response["status"] == "success" and transaction.status != "success":
-                    receiver = transaction.receiver
-                    receiver.add_satoshis(transaction.satoshis) # add satoshis to receiver
+                response = onchain_handler.get_transaction_data(data["bitnob_id"]) # checks if the transaction is successful
+                if response["status"] == "success":
+                    transaction.make_transaction() # if successful, make the transaction
                     
                 transaction.status = response["status"]
                 transaction.save() # update status
                 
-                serializer = OnChainTransactionSerializer(transaction)
-                data = serializer.data
-                    
+            serializer = OnChainTransactionSerializer(transaction)
+            data = serializer.data
+                
             return Response(
                 schemas.ResponseData.success(data), status=status.HTTP_200_OK
             )

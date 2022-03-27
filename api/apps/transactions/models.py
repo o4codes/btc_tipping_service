@@ -3,17 +3,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 # Create your models here.
-
-
-class OnchainAddress(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    address = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.address
-
 class OnChainTransaction(models.Model):
     """
     Model for on-chain transactions.
@@ -25,10 +14,7 @@ class OnChainTransaction(models.Model):
     sender = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_sender",
     )
-    receiver = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="onchain_receiver",
-    )
-    description = models.CharField(max_length=100, null=False, blank=False)
+    description = models.CharField(max_length=100, null=True, blank=True)
     priority_level = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=100, null=False, blank=False)
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
@@ -38,26 +24,28 @@ class OnChainTransaction(models.Model):
 
     def __str__(self):
         return f"{self.sender.email}-{self.receiving_address}"
+    
+    def make_transaction(self):
+        """ deduct satoshis from sender's balance
+        """
+        self.sender.deduct_satoshis(self.satoshis)
+        return 
 
-
+    
 class LightningTransaction(models.Model):
-    """
-    Model for lightning transactions.
+    """ Model for lightning transactions.
     """
     sec_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     btc = models.FloatField(null=False, blank=False)
     satoshis = models.IntegerField(null=True, blank=True)
-    reference = models.CharField(max_length=100, null=False, blank=False)
     sender = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_sender"
     )
-    receiver = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, null=False, blank=False, related_name="lightening_receiver"
-    )
+    lnAddress = models.CharField(max_length=100, null=False, blank=False)
+    reference = models.CharField(max_length=100, null=False, blank=False, default=str(uuid.uuid4()))
     status = models.CharField(max_length=100, null=False, blank=False)
     description = models.CharField(max_length=100, null=False, blank=False, default="Payments")
     bitnob_id = models.CharField(max_length=100, null=False, blank=False)
-    payment_request = models.CharField(max_length=100, null=False, blank=False)
     is_received = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -66,9 +54,7 @@ class LightningTransaction(models.Model):
         return f"{self.sender.email}-{self.lightening_address}"
 
     def make_transaction(self):
-        """
-        Make a lightning transaction.
+        """ Make a lightning transaction.
         """
         self.sender.deduct_satoshis(self.satoshis)
-        self.receiver.add_satoshis(self.satoshis)
         return 
