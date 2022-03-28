@@ -24,6 +24,18 @@ class OnChainTransactionTest(APITestCase):
         refresh = RefreshToken.for_user(self.user)
         self.token = str(refresh.access_token) 
 
+        self.transaction = OnChainTransaction.objects.create(
+            sec_id = uuid.uuid4(),
+            btc = "0.000000001",
+            satoshis = 100000000,
+            receiving_address = "2N3oefVeg6stiTb5Kh3ozCSkaqmx91FDbsm",
+            sender = self.user,
+            description = "test payment",
+            priority_level = "regular",
+            bitnob_id = 1,
+            status = "success"
+        )
+        self.transaction.save()
 
     def test_valid_address(self):
         """ Test for valid address
@@ -91,3 +103,70 @@ class OnChainTransactionTest(APITestCase):
         assert response.status_code == 201
         assert response.json()['status'] == True
         assert data['bitnob_id'] == "1e258349-2043-4ca1-b39c-8418f9e0d36d"
+        
+    
+    @patch("api.utils.bitnob_onchain_handler.BtcOnChainHandler.verify_address")
+    @patch("api.utils.bitnob_onchain_handler.BtcOnChainHandler.send_onchain_btc")
+    def test_payment_unauthorised(self, mock_send_onchain_btc, mock_verify_address):
+        """ test for payment success
+        """
+        client = APIClient()
+    
+        request_data = {
+            "btc": "0.000000001",
+            "receiving_address": "2N3oefVeg6stiTb5Kh3ozCSkaqmx91FDbsm",
+            "description": "test payment"
+        }
+        
+        mock_verify_address.return_value = True
+        
+        mock_send_onchain_btc.return_value = {
+            "id": "1e258349-2043-4ca1-b39c-8418f9e0d36d",
+            "status": "success",
+            "address": "2N3oefVeg6stiTb5Kh3ozCSkaqmx91FDbsm",
+            "satoshis": 0.000000001 * 100000000,
+            "customerEmail": "mail@mail.com",
+            "description": "test payment",
+            "priorityLevel": "regular",
+        }
+        
+        response = client.post(f"/api/v1/btc/onchain", data=request_data, format="json")
+        assert response.status_code == 401
+        
+    def test_payment_invalid_address(self):
+        """ test for payment success
+        """
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+        
+        request_data = {
+            "btc": "0.000000001",
+            "receiving_address": "123rt",
+            "description": "test payment"
+        }
+        
+        response = client.post(f"/api/v1/btc/onchain", data=request_data, format="json")
+        assert response.status_code == 400
+        assert response.json()['status'] == False
+        
+    
+    def test_receiver_confirm_tranaction_success(self):
+        """ test for receiver confirm transaction
+        """
+        
+        client = APIClient()
+        txid = self.transaction.sec_id
+        address = self.transaction.receiving_address
+        response = client.put(f"/api/v1/btc/onchain/transactions/{txid}/address/{address}")
+        assert response.status_code == 200
+        
+    def test_receiver_confirm_transaction_fail(self):
+        """ test for receiver confirm transaction failure
+        """
+        
+        client = APIClient()
+        txid = "123rt"
+        address = "234rt"
+        response = client.put(f"/api/v1/btc/onchain/transactions/{txid}/address/{address}")
+        assert response.status_code == 400
+        

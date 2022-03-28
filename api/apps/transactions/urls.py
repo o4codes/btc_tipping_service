@@ -34,7 +34,7 @@ urlpatterns = [
     ),
     
     path(
-        "btc/onchain/confirm/<str:txid>/address/<str:address>",
+        "btc/onchain/transactions/<str:txid>/address/<str:address>",
         confirm_receive_btc,
         name = "confirm-receive-btc"
     ),

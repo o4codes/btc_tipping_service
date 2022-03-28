@@ -45,11 +45,14 @@ def confirm_receive_btc(request, txid, address):
         if OnChainTransaction.objects.filter(sec_id=txid, receiving_address=address).exists():
             transaction = OnChainTransaction.objects.get(sec_id=txid, receiving_address=address)
             if transaction.is_received == False:
-                transaction.is_received = True
-                transaction.save()
-                return Response(
-                    schemas.ResponseData.success({"message":"Transaction confirmed"}), status=status.HTTP_200_OK
-                )
+                if transaction.status == "success":
+                    transaction.is_received = True
+                    transaction.save()
+                    return Response(
+                        schemas.ResponseData.success({"message":"Transaction confirmed"}), status=status.HTTP_200_OK
+                    )
+                    
+                raise Exception("Cannot confirm transaction. Transaction status is not success.") 
                 
             return Response(
                 schemas.ResponseData.success({"message":"Transaction already confirmed"}), status=status.HTTP_200_OK
