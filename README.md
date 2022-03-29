@@ -4,6 +4,7 @@ This service allows you to tip users of the platform with Bitcoin.
 Once a user is registered with the service, they can tip other users of the platform with Bitcoin in fairly easy and secure manner.
 Users have options of sending BTC to other users using either onchain or lightning payments
 
+Deployed server is running on [Heroku Link](https://btc-tip.herokuapp.com/)
 ## Service Usage
 
 ### BTC OnChain Tipping Process
