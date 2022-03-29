@@ -1926,7 +1926,7 @@
 					"name": "lightning",
 					"item": [
 						{
-							"name": "Gets All BTC Lightening Transactions",
+							"name": "Gets All BTC Lightning Transactions",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2200,7 +2200,7 @@
 							]
 						},
 						{
-							"name": "Send BTC lightening",
+							"name": "Send BTC lightning",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2421,7 +2421,7 @@
 							]
 						},
 						{
-							"name": "Get BTC LIghtening Transaction Details",
+							"name": "Get BTC LIghtning Transaction Details",
 							"request": {
 								"auth": {
 									"type": "bearer",

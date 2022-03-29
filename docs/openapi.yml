@@ -1171,7 +1171,7 @@ paths:
     get:
       tags:
         - api/v1 > lightning
-      summary: Gets All BTC Lightening Transactions
+      summary: Gets All BTC Lightning Transactions
       parameters:
         - name: Accept
           in: header
@@ -1232,7 +1232,7 @@ paths:
     post:
       tags:
         - api/v1 > lightning
-      summary: Send BTC lightening
+      summary: Send BTC lightning
       requestBody:
         content:
           application/json:
@@ -1494,7 +1494,7 @@ paths:
     get:
       tags:
         - api/v1 > lightning
-      summary: Get BTC LIghtening Transaction Details
+      summary: Get BTC LIghtning Transaction Details
       security:
         - bearerAuth: []
       parameters:

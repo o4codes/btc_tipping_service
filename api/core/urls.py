@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from swagger_render.views import SwaggerUIView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -29,5 +31,7 @@ urlpatterns = [
     path("api/v1/", include("api.apps.transactions.urls")),
     path("api/v1/webhook", webhook, name="webhook"),
     path("api/v1/health", status_check, name="status_check"),
-    path("api/v1/docs", redirect_docs, name="redirect_docs"),
+    path('', SwaggerUIView.as_view()),
 ]
+
+urlpatterns += static('/docs/', document_root='docs')

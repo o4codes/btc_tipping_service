@@ -77,9 +77,3 @@ def webhook(request):
               
     return Response(status=status.HTTP_200_OK)
     
-
-@api_view(["GET"])
-@permission_classes((AllowAny,))
-def redirect_docs(request):
-    # django redirect to https://app.swaggerhub.com/apis-docs/o4codes/btc-tipping_api_collection/1.0.0
-    return redirect("https://app.swaggerhub.com/apis-docs/o4codes/btc-tipping_api_collection/1.0.0")
