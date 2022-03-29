@@ -63,6 +63,7 @@ class BtcLighteningHandler(BitnobBase):
         
         url = f"{self.base_url}{self.__pay_ln_address}"
         data = lightning_payment.to_request_payload()
+       
         try:
             verify_data = self.verify_lightning_address(data["lnAddress"])
             if data['satoshis'] > verify_data['satMaxSendable']:
@@ -70,9 +71,10 @@ class BtcLighteningHandler(BitnobBase):
             
             if data['satoshis'] < verify_data['satMinSendable']:
                 raise Exception("Amount is smaller than minimum sendable")
-            
+           
             response = requests.post(url, json=data, headers=self.headers)
             data = response.json()
+            print(data)
             if response.status_code == 200:
                 if data['data']['status'] == "ERROR":
                     raise Exception(data['data']['message'])
@@ -80,7 +82,7 @@ class BtcLighteningHandler(BitnobBase):
                 lightning_payment.set_id(data['data']['id'])
                 return lightning_payment.to_response_payload()
             
-            raise Exception(f"{data['message']}")
+            raise Exception(f"{data}")
         except (HTTPError, ConnectionError) as e:
             raise Exception(f"Request Failed due to {e}")
         

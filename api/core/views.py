@@ -1,7 +1,7 @@
 import hmac
 from hashlib import sha512
 from decouple import config
-from django.dispatch import receiver
+from django.shortcuts import redirect
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
@@ -77,3 +77,9 @@ def webhook(request):
               
     return Response(status=status.HTTP_200_OK)
     
+
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def redirect_docs(request):
+    # django redirect to https://app.swaggerhub.com/apis-docs/o4codes/btc-tipping_api_collection/1.0.0
+    return redirect("https://app.swaggerhub.com/apis-docs/o4codes/btc-tipping_api_collection/1.0.0")

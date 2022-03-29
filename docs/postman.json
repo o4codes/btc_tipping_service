@@ -1,0 +1,2804 @@
+{
+	"info": {
+		"_postman_id": "fd305cfe-efd4-4a72-98c2-229fef9be73d",
+		"name": "BTC Tipping API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api/v1",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "Get All Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4NTI1ODc4LCJpYXQiOjE2NDg1MjQwNzgsImp0aSI6IjlmMmY3ODhhYWY5MzQwNTdhNmUyZmRhNTE4YzgyM2QxIiwidXNlcl9pZCI6Mn0.Jx1ZI7Gv-u4jYnwXHwXUnW_x6nOWRwxRcKuq_Lqxf-c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Get All Users",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/users/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 26 Mar 2022 19:20:20 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "504"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": [\n        {\n            \"id\": \"60fb87ad-627d-4814-9967-07b93a065e07\",\n            \"bitnob_id\": \"45bc0ce0-139b-4f70-b447-e2086fe6078c\",\n            \"email\": \"o4codes@outlook.com\",\n            \"first_name\": \"Shadrach\",\n            \"last_name\": \"Oforkansi\",\n            \"phone\": \"07068360667\",\n            \"country_code\": \"+234\",\n            \"satoshis\": 895\n        },\n        {\n            \"id\": \"fe31dea6-880f-4bb8-a274-de935834e8a4\",\n            \"bitnob_id\": \"e58eca8d-d096-4a4c-8bae-e492bd7690a7\",\n            \"email\": \"shadrach.oforkansi@outlook.com\",\n            \"first_name\": \"Shadrach\",\n            \"last_name\": \"Oforkansi\",\n            \"phone\": \"07068360667\",\n            \"country_code\": \"+234\",\n            \"satoshis\": 1105\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Create User Account",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"shadrach.oforkansi@outlook.com\",\n  \"first_name\": \"Shadrach\",\n  \"last_name\": \"Oforkansi\",\n  \"phone\": \"07068360667\",\n  \"country_code\": \"+234\",\n  \"password\": \"Oforshaddy1668\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"o4codes@outlook.com\",\n  \"first_name\": \"Shadrach\",\n  \"last_name\": \"Oforkansi\",\n  \"phone\": \"07068360667\",\n  \"country_code\": \"+234\",\n  \"password\": \"Oforshaddy1668\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/users/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 19:22:56 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-80630050",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": true,\n  \"data\": {\n    \"id\": \"ae2f9abe-8bc2-4bd6-a9b0-213f85175174\",\n    \"bitnob_id\": \"0a8109d6-fc29-46b0-bfc8-4fefbc9a1a4d\",\n    \"email\": \"shadrach.oforkansi@gmail.com\",\n    \"first_name\": \"Shadrach\",\n    \"last_name\": \"Oforkansi\",\n    \"phone\": \"07068360667\",\n    \"country_code\": \"+234\"\n  }\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"o4codes@outlook.com\",\n  \"first_name\": \"Shadrach\",\n  \"last_name\": \"Oforkansi\",\n  \"phone\": \"07068360667\",\n  \"country_code\": \"+234\",\n  \"password\": \"Oforshaddy1668\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/users/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												""
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 19:22:09 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-92718067",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": false,\n  \"message\": {\n    \"email\": [\n      \"Enter a valid email address.\"\n    ]\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Gets User Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4NTI1ODc4LCJpYXQiOjE2NDg1MjQwNzgsImp0aSI6IjlmMmY3ODhhYWY5MzQwNTdhNmUyZmRhNTE4YzgyM2QxIiwidXNlcl9pZCI6Mn0.Jx1ZI7Gv-u4jYnwXHwXUnW_x6nOWRwxRcKuq_Lqxf-c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "60fb87ad-627d-4814-9967-07b93a065e07"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/users/ae2f9abe-8bc2-4bd6-a9b0-213f8517517",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"ae2f9abe-8bc2-4bd6-a9b0-213f8517517"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 19:31:36 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-83880059",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": false,\n  \"message\": \"['“ae2f9abe-8bc2-4bd6-a9b0-213f8517517” is not a valid UUID.']\"\n}"
+								},
+								{
+									"name": "Gets User Data Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "60fb87ad-627d-4814-9967-07b93a065e07"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 26 Mar 2022 19:22:06 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "256"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": {\n        \"id\": \"60fb87ad-627d-4814-9967-07b93a065e07\",\n        \"bitnob_id\": \"45bc0ce0-139b-4f70-b447-e2086fe6078c\",\n        \"email\": \"o4codes@outlook.com\",\n        \"first_name\": \"Shadrach\",\n        \"last_name\": \"Oforkansi\",\n        \"phone\": \"07068360667\",\n        \"country_code\": \"+234\",\n        \"satoshis\": 895\n    }\n}"
+								}
+							]
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MzIzNzE2LCJpYXQiOjE2NDgzMjE5MTYsImp0aSI6IjIzNTZiZDQzNzg1OTRhMmNhN2M5ZGIxOGU1YTJkMDVmIiwidXNlcl9pZCI6Mn0.GR0G_-_Y5Y7fTaZGeE7MzfmQfE3SRTTqv7sGlMo-sTU",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "token",
+					"item": [
+						{
+							"name": "User Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"shadrach.oforkansi@outlook.com\",\n  \"password\": \"Oforshaddy1668\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"token"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"shadrach.oforkansi@outlook.com\",\n  \"password\": \"Oforshaddy1668\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/token/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"token",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 04:13:29 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "POST, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-29806664",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTM5MTIwOSwiaWF0IjoxNjQ4MDk1MjA5LCJqdGkiOiIyZWE5OWU2NDk2N2Q0Nzg1ODQ2NGE2NDk3ZjhiMGFhYSIsInVzZXJfaWQiOjJ9.mgkyjyw2uuVTuF8HyCbzWEv9PdwRp1A1J9bCZQ51jNc\",\n  \"access\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MDk2MTA5LCJpYXQiOjE2NDgwOTUyMDksImp0aSI6IjkzNzhhMWFlZTBiZjQ4YmVhM2VhZGNhZWNjN2M2YTQwIiwidXNlcl9pZCI6Mn0.fLrNphFcngWy_UrQP4c3EJxclj_JZUCE9O10TUiaw5Q\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"shadrach.oforkansi@outlook.com\",\n  \"password\": \"Oforshaddy1668\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/token/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"token",
+												""
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 18:54:11 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "WWW-Authenticate",
+											"value": "Bearer realm=\"api\"",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "POST, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-67753904",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"No active account found with the given credentials\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Token Refresh",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTgyMDIxOCwiaWF0IjoxNjQ4NTI0MjE4LCJqdGkiOiIwNjE5MDZjNTIyYzM0NTRhOTI2ZDJhNDg5ZDRkYTQ3NyIsInVzZXJfaWQiOjJ9.N_rkveA5o_OUtV1QuU39eaTPfcMgheIMh-S7p8KW7uY\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/token/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"token",
+										"refresh"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTUwMDc4NCwiaWF0IjoxNjQ4MjA0Nzg0LCJqdGkiOiJlMzE5OTE2ZDUzZGU0NmZiOTI4NjkwMjRjZmE3NDhkNSIsInVzZXJfaWQiOjF9.8UKuO9WZCUbOTWOs-YpDm23PJeOfAwYEt1jeIKfljjM\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/token/refresh",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"token",
+												"refresh"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 10:40:05 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "POST, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-29806664",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"access\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjA2NjA1LCJpYXQiOjE2NDgyMDQ3ODQsImp0aSI6IjI5NWQ1NTA0YTc5MjQ4NjlhZWNlOTg4MDNkNDJkNWM4IiwidXNlcl9pZCI6MX0.3Heil20nhQhdZXeeJLWin9lD9dYP0YOvY-wbbAx3mxw\",\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTUwMDgwNSwiaWF0IjoxNjQ4MjA0ODA1LCJqdGkiOiIwMTcwMmM2NjFhMDk0ODAyYWNmOTk0M2Y5ODlmNjMzNSIsInVzZXJfaWQiOjF9.3E3w8Ys4xUaujxpzDECwucpSKcdd2EaAjYL-pB6-gcw\"\n}"
+								},
+								{
+									"name": "Token Request Failure",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTgyMDIxOCwiaWF0IjoxNjQ4NTI0MjE4LCJqdGkiOiIwNjE5MDZjNTIyYzM0NTRhOTI2ZDJhNDg5ZDRkYTQ3NyIsInVzZXJfaWQiOjJ9.N_rkveA5o_OUtV1QuU39eaTPfcMgheIMh-S7p8KW7u\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/token/refresh",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"token",
+												"refresh"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 03:24:11 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "WWW-Authenticate",
+											"value": "Bearer realm=\"api\""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "POST, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "65"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"detail\": \"Token is invalid or expired\",\n    \"code\": \"token_not_valid\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "onchain",
+					"item": [
+						{
+							"name": "Validate BTC-OnChain Address",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/onchain/validate/:address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"onchain",
+										"validate",
+										":address"
+									],
+									"variable": [
+										{
+											"key": "address",
+											"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Validate Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain/validate/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain",
+												"validate",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "address",
+													"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 26 Mar 2022 19:29:26 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "53"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": {\n        \"message\": \"Address is valid\"\n    }\n}"
+								},
+								{
+									"name": "Validate Failure",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain/validate/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain",
+												"validate",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "address",
+													"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdy"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sat, 26 Mar 2022 19:30:31 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "44"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": false,\n    \"message\": \"Invalid Address\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Send BTC on-chain tips",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"btc\": 0.000003,\n  \"receiving_address\": \"tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq\",\n  \"description\": \"thanks\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/onchain",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"onchain"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"btc\": 0.0001,\n  \"receiving_address\": \"tb1qsweqftvfp33sztffh5wwjfwav98nkmkjr5fh6g\",\n  \"description\": \"thanks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/on-chain/tips/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"on-chain",
+												"tips",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 18:44:25 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "5397390",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": true,\n  \"data\": {\n    \"id\": \"0938c13c-2794-4ba9-897c-269ee172f069\",\n    \"btc\": 0.0001,\n    \"satoshis\": 10000,\n    \"receiving_address\": \"tb1qsweqftvfp33sztffh5wwjfwav98nkmkjr5fh6g\",\n    \"sender\": 2,\n    \"description\": \"thanks\",\n    \"priority_level\": \"regular\",\n    \"status\": \"pending\",\n    \"bitnob_id\": \"62e2c15a-64bb-49c4-9b09-43fdc1f3be40\",\n    \"created_at\": \"2022-03-24T18:44:25.357541Z\",\n    \"updated_at\": \"2022-03-24T18:44:25.365270Z\"\n  }\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"btc\": 0.0001,\n  \"receiving_address\": \"tb1qsweqftvfp33sztffh5wwjfwav98nkmkjr5fh6g\",\n  \"description\": \"thanks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/on-chain/tips/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"on-chain",
+												"tips",
+												""
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 04:38:37 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "POST, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "44663850",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"False\",\n  \"message\": \"Payment Failed: bitcoin address not valid\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get All BTC onchain tips",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/onchain",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"onchain"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Get All BTC on-chain tips",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 04:21:54 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "379"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": [\n        {\n            \"id\": \"3d6e7245-46d6-40aa-a982-5698e8f936b1\",\n            \"btc\": 0.000003,\n            \"satoshis\": 300,\n            \"receiving_address\": \"tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq\",\n            \"sender\": 2,\n            \"description\": \"thanks\",\n            \"priority_level\": \"regular\",\n            \"status\": \"success\",\n            \"bitnob_id\": \"44f59e95-3041-4a4f-8ea4-358550a23c58\",\n            \"created_at\": \"2022-03-29T04:17:16.223080Z\",\n            \"updated_at\": \"2022-03-29T04:18:01.494151Z\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Gets onchain BTC transaction status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/onchain/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"onchain",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "3d6e7245-46d6-40aa-a982-5698e8f936b1"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/on-chain/tips/0938c13c-2794-4ba9-897c-269ee172f069",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"on-chain",
+												"tips",
+												"0938c13c-2794-4ba9-897c-269ee172f069"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 24 Mar 2022 18:51:35 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-63056970",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": false,\n  \"message\": \"Transaction does not exist\"\n}"
+								},
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "3d6e7245-46d6-40aa-a982-5698e8f936b1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 04:23:25 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "377"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": {\n        \"id\": \"3d6e7245-46d6-40aa-a982-5698e8f936b1\",\n        \"btc\": 0.000003,\n        \"satoshis\": 300,\n        \"receiving_address\": \"tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq\",\n        \"sender\": 2,\n        \"description\": \"thanks\",\n        \"priority_level\": \"regular\",\n        \"status\": \"success\",\n        \"bitnob_id\": \"44f59e95-3041-4a4f-8ea4-358550a23c58\",\n        \"created_at\": \"2022-03-29T04:17:16.223080Z\",\n        \"updated_at\": \"2022-03-29T04:18:01.494151Z\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Receiver confirm transaction",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/onchain/transactions/:id/address/:address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"onchain",
+										"transactions",
+										":id",
+										"address",
+										":address"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "3d6e7245-46d6-40aa-a982-5698e8f936b1"
+										},
+										{
+											"key": "address",
+											"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdy"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Receiver confirm transaction success",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain/transactions/:id/address/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain",
+												"transactions",
+												":id",
+												"address",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "3d6e7245-46d6-40aa-a982-5698e8f936b1"
+												},
+												{
+													"key": "address",
+													"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 04:24:50 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "PUT, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "58"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": {\n        \"message\": \"Transaction confirmed\"\n    }\n}"
+								},
+								{
+									"name": "Receiver confirm transaction failure",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/onchain/transactions/:id/address/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"onchain",
+												"transactions",
+												":id",
+												"address",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "3d6e7245-46d6-40aa-a982-5698e8f936b1"
+												},
+												{
+													"key": "address",
+													"value": "tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdy"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 04:25:29 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "PUT, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "55"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": false,\n    \"message\": \"Transaction does not exist\"\n}"
+								}
+							]
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4NTI5MjAzLCJpYXQiOjE2NDg1Mjc0MDMsImp0aSI6IjRmNWM2OTQxYmJjYjQ1YThiMTk2ZjYxMmNkNjcwZjVjIiwidXNlcl9pZCI6Mn0.ufNfGsDPNyrZ7uKyse9RFtWQLkmD0gImzM2lVhabA4o",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "lightning",
+					"item": [
+						{
+							"name": "Gets All BTC Lightening Transactions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/lightning",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"lightning"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Gets All BTC Lightening Transactions",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/lightning",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"lightning"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 04:27:02 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "25"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": []\n}"
+								}
+							]
+						},
+						{
+							"name": "Validate Lightning Address",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/lightning/validate/:address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"lightning",
+										"validate",
+										":address"
+									],
+									"variable": [
+										{
+											"key": "address",
+											"value": "bernard@bitnob.co"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/lightning/validate/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"lightning",
+												"validate",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "address",
+													"value": "bernard@bitnob.com"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 05:39:37 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "OPTIONS, GET"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "370"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": true,\n    \"data\": {\n        \"tag\": \"payRequest\",\n        \"metadata\": \"[[\\\"text/plain\\\",\\\"Send money to bernard\\\"],[\\\"text/identifier\\\",\\\"bernard@bitnob.com\\\"],[\\\"image/png;base64\\\",\\\"\\\"]]\",\n        \"callback\": \"https://bitnob.com/lnurlpay/bernard\",\n        \"commentAllowed\": 150,\n        \"image\": \"\",\n        \"identifier\": \"bernard@bitnob.com\",\n        \"description\": \"Send money to bernard\",\n        \"satMinSendable\": 1,\n        \"satMaxSendable\": 100000\n    }\n}"
+								},
+								{
+									"name": "Validate Fail",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/lightning/validate/:address",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"lightning",
+												"validate",
+												":address"
+											],
+											"variable": [
+												{
+													"key": "address",
+													"value": "bernard@bitnob.co"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 29 Mar 2022 05:40:03 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.8.10"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept"
+										},
+										{
+											"key": "Allow",
+											"value": "OPTIONS, GET"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "48"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": false,\n    \"message\": \"LnAddress not valid\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Send BTC lightening",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"btc\": 0.000000012,\n  \"lnAddress\": \"bernard@bitnob.com\",\n  \"description\": \"tests\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/lightning",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"lightning"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"btc\": 0.0001,\n  \"receiver_email\": \"shadrach.oforkansi@outlook.com\",\n  \"description\": \"tests\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/lightening/tips/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"lightening",
+												"tips",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 05:18:56 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "42636932",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": true,\n  \"data\": {\n    \"id\": \"3d1f08c6-566c-4ff8-983e-addd0ae798b0\",\n    \"btc\": 0.0001,\n    \"satoshis\": 10000,\n    \"reference\": \"006fa93c-a245-48e9-b0cd-faff43bca24c\",\n    \"description\": \"Payments\",\n    \"sender\": 2,\n    \"status\": \"pending\",\n    \"bitnob_id\": \"c611c7d0-e197-44df-adc6-1e98b52076eb\",\n    \"created_at\": \"2022-03-25T05:18:56.322629Z\",\n    \"updated_at\": \"2022-03-25T05:18:56.331651Z\"\n  }\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"btc\": 0.0001,\n  \"receiver_email\": \"shadrach.oforkansi@outlook.com\",\n  \"description\": \"tests\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/lightening/tips/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"lightening",
+												"tips",
+												""
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 05:20:57 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, POST, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-38518099",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": false,\n  \"message\": {\n    \"non_field_errors\": [\n      \"Reciever account does not exist\"\n    ]\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get BTC LIghtening Transaction Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MzI4MDgzLCJpYXQiOjE2NDgzMjYyODMsImp0aSI6IjE1OWIzMWEyYjJkMDQwNzQ5M2M1MDcwMDE3YjQzMmQyIiwidXNlcl9pZCI6Mn0._QXxgSqLokVCnjLTwnLZIBKNBZKjq0pvrHXGtszRBHw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/lightning/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"lightning",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b22ba34a-9d1f-4965-853b-254dfee3a923"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/lightening/tips/3d1f08c6-566c-4ff8-983e-addd0ae798b0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"lightening",
+												"tips",
+												"3d1f08c6-566c-4ff8-983e-addd0ae798b0"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 09:29:01 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-22366077",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": true,\n  \"data\": {\n    \"id\": \"3d1f08c6-566c-4ff8-983e-addd0ae798b0\",\n    \"btc\": 0.0001,\n    \"satoshis\": 10000,\n    \"reference\": \"006fa93c-a245-48e9-b0cd-faff43bca24c\",\n    \"description\": \"Payments\",\n    \"sender\": 2,\n    \"receiver\": 1,\n    \"status\": \"success\",\n    \"bitnob_id\": \"c611c7d0-e197-44df-adc6-1e98b52076eb\",\n    \"created_at\": \"2022-03-25T05:18:56.322629Z\",\n    \"updated_at\": \"2022-03-25T05:18:56.331651Z\"\n  }\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/lightening/tips/3d1f08c6-566c-4ff8-983e-addd0ae798b0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"lightening",
+												"tips",
+												"3d1f08c6-566c-4ff8-983e-addd0ae798b0"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 09:28:09 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "GET, HEAD, OPTIONS",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "-83880059",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": false,\n  \"message\": \"['“3d1f08c6-566c-4ff8-983e-addd0ae798b” is not a valid UUID.']\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Receiver confirm lightning transaction",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/btc/lightning/transactions/:id/address/:address",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"btc",
+										"lightning",
+										"transactions",
+										":id",
+										"address",
+										":address"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b22ba34a-9d1f-4965-853b-254dfee3a923"
+										},
+										{
+											"key": "address",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/btc/lightening/confirm/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"btc",
+												"lightening",
+												"confirm",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": null
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Fri, 25 Mar 2022 10:30:57 GMT",
+											"description": ""
+										},
+										{
+											"key": "Server",
+											"value": "-31458932.473316506",
+											"description": ""
+										},
+										{
+											"key": "Vary",
+											"value": "Accept",
+											"description": ""
+										},
+										{
+											"key": "Allow",
+											"value": "OPTIONS, GET",
+											"description": ""
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY",
+											"description": ""
+										},
+										{
+											"key": "Content-Length",
+											"value": "83179428",
+											"description": ""
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"description": ""
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": true,\n  \"data\": {\n    \"message\": \"BTC payment already confirmed\"\n  }\n}"
+								}
+							]
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4NTM0MTQ3LCJpYXQiOjE2NDg1MzIzNDcsImp0aSI6ImFlY2ZkYzhjMGY4ODRmZGE4MTlmMTViN2U1N2MxOGM2IiwidXNlcl9pZCI6Mn0.r6jbNgpxb4004Z6sbWScUMI2AmMo3awRKY8SgL3UtkI",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	]
+}

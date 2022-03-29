@@ -19,7 +19,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from api.core.views import webhook, status_check
+from api.core.views import webhook, status_check, redirect_docs
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,4 +29,5 @@ urlpatterns = [
     path("api/v1/", include("api.apps.transactions.urls")),
     path("api/v1/webhook", webhook, name="webhook"),
     path("api/v1/health", status_check, name="status_check"),
+    path("api/v1/docs", redirect_docs, name="redirect_docs"),
 ]

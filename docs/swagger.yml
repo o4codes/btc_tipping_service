@@ -1,0 +1,1701 @@
+openapi: 3.0.0
+info:
+  title: BTC Tipping API Collection
+  version: 1.0.0
+servers:
+  - url: http://{{baseurl}}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    noauthAuth:
+      type: http
+      scheme: noauth
+tags:
+  - name: api/v1
+  - name: api/v1 > users
+  - name: api/v1 > token
+  - name: api/v1 > onchain
+  - name: api/v1 > lightning
+paths:
+  /api/v1/users:
+    get:
+      tags:
+        - api/v1 > users
+      summary: Get All Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sat, 26 Mar 2022 19:20:20 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '504'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  - id: 60fb87ad-627d-4814-9967-07b93a065e07
+                    bitnob_id: 45bc0ce0-139b-4f70-b447-e2086fe6078c
+                    email: o4codes@outlook.com
+                    first_name: Shadrach
+                    last_name: Oforkansi
+                    phone: '07068360667'
+                    country_code: '+234'
+                    satoshis: 895
+                  - id: fe31dea6-880f-4bb8-a274-de935834e8a4
+                    bitnob_id: e58eca8d-d096-4a4c-8bae-e492bd7690a7
+                    email: shadrach.oforkansi@outlook.com
+                    first_name: Shadrach
+                    last_name: Oforkansi
+                    phone: '07068360667'
+                    country_code: '+234'
+                    satoshis: 1105
+  /api/v1/users/:
+    post:
+      tags:
+        - api/v1 > users
+      summary: Create User Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: shadrach.oforkansi@outlook.com
+                first_name: Shadrach
+                last_name: Oforkansi
+                phone: '07068360667'
+                country_code: '+234'
+                password: Oforshaddy1668
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 19:22:56 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-80630050'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: ae2f9abe-8bc2-4bd6-a9b0-213f85175174
+                  bitnob_id: 0a8109d6-fc29-46b0-bfc8-4fefbc9a1a4d
+                  email: shadrach.oforkansi@gmail.com
+                  first_name: Shadrach
+                  last_name: Oforkansi
+                  phone: '07068360667'
+                  country_code: '+234'
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 19:22:09 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-92718067'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message:
+                  email:
+                    - Enter a valid email address.
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - api/v1 > users
+      summary: Gets User Data
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 60fb87ad-627d-4814-9967-07b93a065e07
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sat, 26 Mar 2022 19:22:06 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '256'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: 60fb87ad-627d-4814-9967-07b93a065e07
+                  bitnob_id: 45bc0ce0-139b-4f70-b447-e2086fe6078c
+                  email: o4codes@outlook.com
+                  first_name: Shadrach
+                  last_name: Oforkansi
+                  phone: '07068360667'
+                  country_code: '+234'
+                  satoshis: 895
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 19:31:36 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-83880059'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: '[''“ae2f9abe-8bc2-4bd6-a9b0-213f8517517” is not a valid UUID.'']'
+  /api/v1/token:
+    post:
+      tags:
+        - api/v1 > token
+      summary: User Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: shadrach.oforkansi@outlook.com
+                password: Oforshaddy1668
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 04:13:29 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-29806664'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                refresh: >-
+                  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTM5MTIwOSwiaWF0IjoxNjQ4MDk1MjA5LCJqdGkiOiIyZWE5OWU2NDk2N2Q0Nzg1ODQ2NGE2NDk3ZjhiMGFhYSIsInVzZXJfaWQiOjJ9.mgkyjyw2uuVTuF8HyCbzWEv9PdwRp1A1J9bCZQ51jNc
+                access: >-
+                  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MDk2MTA5LCJpYXQiOjE2NDgwOTUyMDksImp0aSI6IjkzNzhhMWFlZTBiZjQ4YmVhM2VhZGNhZWNjN2M2YTQwIiwidXNlcl9pZCI6Mn0.fLrNphFcngWy_UrQP4c3EJxclj_JZUCE9O10TUiaw5Q
+        '401':
+          description: Unauthorized
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 18:54:11 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            WWW-Authenticate:
+              schema:
+                type: string
+                example: Bearer realm="api"
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-67753904'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                detail: No active account found with the given credentials
+  /api/v1/token/refresh:
+    post:
+      tags:
+        - api/v1 > token
+      summary: Token Refresh
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                refresh: >-
+                  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTgyMDIxOCwiaWF0IjoxNjQ4NTI0MjE4LCJqdGkiOiIwNjE5MDZjNTIyYzM0NTRhOTI2ZDJhNDg5ZDRkYTQ3NyIsInVzZXJfaWQiOjJ9.N_rkveA5o_OUtV1QuU39eaTPfcMgheIMh-S7p8KW7uY
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 10:40:05 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-29806664'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                access: >-
+                  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4MjA2NjA1LCJpYXQiOjE2NDgyMDQ3ODQsImp0aSI6IjI5NWQ1NTA0YTc5MjQ4NjlhZWNlOTg4MDNkNDJkNWM4IiwidXNlcl9pZCI6MX0.3Heil20nhQhdZXeeJLWin9lD9dYP0YOvY-wbbAx3mxw
+                refresh: >-
+                  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0OTUwMDgwNSwiaWF0IjoxNjQ4MjA0ODA1LCJqdGkiOiIwMTcwMmM2NjFhMDk0ODAyYWNmOTk0M2Y5ODlmNjMzNSIsInVzZXJfaWQiOjF9.3E3w8Ys4xUaujxpzDECwucpSKcdd2EaAjYL-pB6-gcw
+        '401':
+          description: Unauthorized
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 03:24:11 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            WWW-Authenticate:
+              schema:
+                type: string
+                example: Bearer realm="api"
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '65'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                detail: Token is invalid or expired
+                code: token_not_valid
+  /api/v1/btc/onchain/validate/{address}:
+    get:
+      tags:
+        - api/v1 > onchain
+      summary: Validate BTC-OnChain Address
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: address
+          in: path
+          schema:
+            type: string
+          required: true
+          example: tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sat, 26 Mar 2022 19:29:26 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '53'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Validate Success
+                  value:
+                    status: true
+                    data:
+                      message: Address is valid
+                example-1:
+                  summary: Validate Failure
+                  value:
+                    status: false
+                    message: Invalid Address
+  /api/v1/btc/onchain:
+    post:
+      tags:
+        - api/v1 > onchain
+      summary: Send BTC on-chain tips
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                btc: 0.000003
+                receiving_address: tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq
+                description: thanks
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 18:44:25 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '5397390'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: 0938c13c-2794-4ba9-897c-269ee172f069
+                  btc: 0.0001
+                  satoshis: 10000
+                  receiving_address: tb1qsweqftvfp33sztffh5wwjfwav98nkmkjr5fh6g
+                  sender: 2
+                  description: thanks
+                  priority_level: regular
+                  status: pending
+                  bitnob_id: 62e2c15a-64bb-49c4-9b09-43fdc1f3be40
+                  created_at: '2022-03-24T18:44:25.357541Z'
+                  updated_at: '2022-03-24T18:44:25.365270Z'
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 04:38:37 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '44663850'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: 'False'
+                message: 'Payment Failed: bitcoin address not valid'
+    get:
+      tags:
+        - api/v1 > onchain
+      summary: Get All BTC onchain tips
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 04:21:54 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '379'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  - id: 3d6e7245-46d6-40aa-a982-5698e8f936b1
+                    btc: 0.000003
+                    satoshis: 300
+                    receiving_address: tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq
+                    sender: 2
+                    description: thanks
+                    priority_level: regular
+                    status: success
+                    bitnob_id: 44f59e95-3041-4a4f-8ea4-358550a23c58
+                    created_at: '2022-03-29T04:17:16.223080Z'
+                    updated_at: '2022-03-29T04:18:01.494151Z'
+  /api/v1/btc/onchain/{id}:
+    get:
+      tags:
+        - api/v1 > onchain
+      summary: Gets onchain BTC transaction status
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3d6e7245-46d6-40aa-a982-5698e8f936b1
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 04:23:25 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '377'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: 3d6e7245-46d6-40aa-a982-5698e8f936b1
+                  btc: 0.000003
+                  satoshis: 300
+                  receiving_address: tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdyq
+                  sender: 2
+                  description: thanks
+                  priority_level: regular
+                  status: success
+                  bitnob_id: 44f59e95-3041-4a4f-8ea4-358550a23c58
+                  created_at: '2022-03-29T04:17:16.223080Z'
+                  updated_at: '2022-03-29T04:18:01.494151Z'
+        '404':
+          description: Not Found
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Mar 2022 18:51:35 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-63056970'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: Transaction does not exist
+  /api/v1/btc/onchain/transactions/{id}/address/{address}:
+    put:
+      tags:
+        - api/v1 > onchain
+      summary: Receiver confirm transaction
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3d6e7245-46d6-40aa-a982-5698e8f936b1
+        - name: address
+          in: path
+          schema:
+            type: string
+          required: true
+          example: tb1qpmxaqs67ee6kvvfczk3rx8awp2h3w63e9jgdy
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 04:24:50 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: PUT, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '58'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  message: Transaction confirmed
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 04:25:29 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: PUT, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '55'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: Transaction does not exist
+  /api/v1/btc/lightning:
+    get:
+      tags:
+        - api/v1 > lightning
+      summary: Gets All BTC Lightening Transactions
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 04:27:02 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '25'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data: []
+    post:
+      tags:
+        - api/v1 > lightning
+      summary: Send BTC lightening
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                btc: 1.2e-8
+                lnAddress: bernard@bitnob.com
+                description: tests
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 05:18:56 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '42636932'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: 3d1f08c6-566c-4ff8-983e-addd0ae798b0
+                  btc: 0.0001
+                  satoshis: 10000
+                  reference: 006fa93c-a245-48e9-b0cd-faff43bca24c
+                  description: Payments
+                  sender: 2
+                  status: pending
+                  bitnob_id: c611c7d0-e197-44df-adc6-1e98b52076eb
+                  created_at: '2022-03-25T05:18:56.322629Z'
+                  updated_at: '2022-03-25T05:18:56.331651Z'
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 05:20:57 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, POST, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-38518099'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message:
+                  non_field_errors:
+                    - Reciever account does not exist
+  /api/v1/btc/lightning/validate/{address}:
+    get:
+      tags:
+        - api/v1 > lightning
+      summary: Validate Lightning Address
+      parameters:
+        - name: address
+          in: path
+          schema:
+            type: string
+          required: true
+          example: bernard@bitnob.co
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 05:39:37 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: OPTIONS, GET
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '370'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  tag: payRequest
+                  metadata: >-
+                    [["text/plain","Send money to
+                    bernard"],["text/identifier","bernard@bitnob.com"],["image/png;base64",""]]
+                  callback: https://bitnob.com/lnurlpay/bernard
+                  commentAllowed: 150
+                  image: ''
+                  identifier: bernard@bitnob.com
+                  description: Send money to bernard
+                  satMinSendable: 1
+                  satMaxSendable: 100000
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 29 Mar 2022 05:40:03 GMT
+            Server:
+              schema:
+                type: number
+                example: WSGIServer/0.2 CPython/3.8.10
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: OPTIONS, GET
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '48'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: LnAddress not valid
+  /api/v1/btc/lightning/{id}:
+    get:
+      tags:
+        - api/v1 > lightning
+      summary: Get BTC LIghtening Transaction Details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: b22ba34a-9d1f-4965-853b-254dfee3a923
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 09:29:01 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-22366077'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  id: 3d1f08c6-566c-4ff8-983e-addd0ae798b0
+                  btc: 0.0001
+                  satoshis: 10000
+                  reference: 006fa93c-a245-48e9-b0cd-faff43bca24c
+                  description: Payments
+                  sender: 2
+                  receiver: 1
+                  status: success
+                  bitnob_id: c611c7d0-e197-44df-adc6-1e98b52076eb
+                  created_at: '2022-03-25T05:18:56.322629Z'
+                  updated_at: '2022-03-25T05:18:56.331651Z'
+        '400':
+          description: Bad Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 09:28:09 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: string
+                example: '-83880059'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: '[''“3d1f08c6-566c-4ff8-983e-addd0ae798b” is not a valid UUID.'']'
+  /api/v1/btc/lightning/transactions/{id}/address/{address}:
+    put:
+      tags:
+        - api/v1 > lightning
+      summary: Receiver confirm lightning transaction
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: b22ba34a-9d1f-4965-853b-254dfee3a923
+        - name: address
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 25 Mar 2022 10:30:57 GMT
+            Server:
+              schema:
+                type: number
+                example: '-31458932.473316506'
+            Vary:
+              schema:
+                type: string
+                example: Accept
+            Allow:
+              schema:
+                type: string
+                example: OPTIONS, GET
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Content-Length:
+              schema:
+                type: integer
+                example: '83179428'
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                data:
+                  message: BTC payment already confirmed

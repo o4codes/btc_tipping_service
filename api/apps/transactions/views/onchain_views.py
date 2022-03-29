@@ -92,9 +92,8 @@ class OnChainTransactionViews(APIView):
 
     def get(self, request, format=None):
         try:
-            transactions = OnChainTransaction.objects.get(sender=request.user)
+            transactions = OnChainTransaction.objects.filter(sender=request.user)
             serializer = OnChainTransactionSerializer(transactions, many=True)
-                
             return Response(
                 schemas.ResponseData.success(serializer.data), status=status.HTTP_200_OK
             )

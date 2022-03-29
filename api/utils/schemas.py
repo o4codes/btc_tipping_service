@@ -119,7 +119,7 @@ class BtcLightningPayment:
         return {
             "reference": self.__reference,
             "satoshis": self.__satoshis,
-            "senderEmail": self.__sender_email,
+            "customerEmail": self.__sender_email,
             "lnAddress": self.__ln_address,
         } 
      
