@@ -10,13 +10,13 @@ Users have options of sending BTC to other users using either onchain or lightni
 
 1. Validate the address using the '/btc/onchain/validate/:address' endpoint.
 2. Send the amount of BTC to the address by making a POST request to '/btc/onchain' endpoint. The request body will contain the amount of BTC, the address of the user and a message/description
-3. The user will receive the amount of BTC in their wallet and confirm that payment is received using the '/btc/onchain/confirm/:txid/address/:address' endpoint. where txid is the transaction id of the payment and address is the address of the receiver.
+3. The user will receive the amount of BTC in their wallet and confirm that payment is received using the '/btc/onchain/transactions/:txid/address/:address' endpoint. where txid is the transaction id of the payment and address is the address of the receiver.
 
 ### BTC Lightning Tipping Process
 
 1. Validate the lightness address using the '/btc/lightning/validate/:address' endpoint
 2. Send btc by making a POST request to '/btc/lightning/tips' endpoint. The request body will contain the amount of BTC, the lightning address, a description.
-3. The user wull receive the amount of BTC in their wallet and confirm that payment is received using the '/btc/lightning/tips/confirm/:txid/address/:address' endpoint. where txid is the transaction id of the payment and address is the address of the receiver.
+3. The user wull receive the amount of BTC in their wallet and confirm that payment is received using the '/btc/lightning/transactions/:txid/address/:address' endpoint. where txid is the transaction id of the payment and address is the address of the receiver.
 
 ## Project Setup Guidelines
 
@@ -30,11 +30,12 @@ Users have options of sending BTC to other users using either onchain or lightni
 8. Create a .env file containing the secret keys in the following format specified in the .env.sample file
 9. Create migrations using `python manage.py makemigrations`
 10. Run the migrations using `python manage.py migrate`
-11. Install ngrok on your systems in order to test locally with webhooks functionality
-12. Startup ngrok using `ngrok http 8000`
-13. Startup the server using `python manage.py runserver`. Ensure server is running on the port ngrok is running on
-14. Go to your bitnob account and add webhook url to the webhooks section of your account. The webhook url should be the url of the ngrok server appended with "/api/v1/webhook"
-15. Go to the docs endpoint of the django server which is at <http://localhost:8000/api/v1/docs>
+11. Tests can be ran using `python manage.py test`
+12. Install ngrok on your systems in order to test locally with webhooks functionality
+13. Startup ngrok using `ngrok http 8000`
+14. Startup the server using `python manage.py runserver`. Ensure server is running on the port ngrok is running on
+15. Go to your bitnob account and add webhook url to the webhooks section of your account. The webhook url should be the url of the ngrok server appended with "/api/v1/webhook"
+16. Docs of the endpoints can be viewed from the root url of the server which is <http://127.0.0.1:8000> (if the server is running on port 8000)
 
 ## Contribution
 
