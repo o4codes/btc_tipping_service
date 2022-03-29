@@ -151,3 +151,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 SWAGGER_YAML_FILENAME = '/docs/openapi.yml'
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
+import django_heroku
+django_heroku.settings(locals())
