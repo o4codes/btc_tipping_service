@@ -24,18 +24,19 @@ Users have options of sending BTC to other users using either onchain or lightni
 2. Fork the repository
 3. Clone the repository using `git clone <github_repo_link>`
 4. cd into the root directory of the repository
-5. Create a virtual environment using `python3 -m venv venv`
-6. Activate the virtual environment using `source venv/bin/activate` (or `venv/Scripts/activate` on Windows)
-7. Install the dependencies using `pip install -r requirements.txt`
-8. Create a .env file containing the secret keys in the following format specified in the .env.sample file
-9. Create migrations using `python manage.py makemigrations`
-10. Run the migrations using `python manage.py migrate`
-11. Tests can be ran using `python manage.py test`
-12. Install ngrok on your systems in order to test locally with webhooks functionality
-13. Startup ngrok using `ngrok http 8000`
-14. Startup the server using `python manage.py runserver`. Ensure server is running on the port ngrok is running on
-15. Go to your bitnob account and add webhook url to the webhooks section of your account. The webhook url should be the url of the ngrok server appended with "/api/v1/webhook"
-16. Docs of the endpoints can be viewed from the root url of the server which is <http://127.0.0.1:8000> (if the server is running on port 8000)
+5. Ensure python is installed  
+6. Create a virtual environment using `python3 -m venv venv`
+7. Activate the virtual environment using `source venv/bin/activate` (or `venv/Scripts/activate` on Windows)
+8. Install the dependencies using `pip install -r requirements.txt`
+9. Create a .env file containing the secret keys in the following format specified in the .env.sample file
+10. Create migrations using `python manage.py makemigrations`
+11. Run the migrations using `python manage.py migrate`
+12. Tests can be ran using `python manage.py test`
+13. Install ngrok on your systems in order to test locally with webhooks functionality
+14. Startup ngrok using `ngrok http 8000`
+15. Startup the server using `python manage.py runserver`. Ensure server is running on the port ngrok is running on
+16. Go to your bitnob account and add webhook url to the webhooks section of your account. The webhook url should be the url of the ngrok server appended with "/api/v1/webhook"
+17. Docs of the endpoints can be viewed from the root url of the server which is <http://127.0.0.1:8000> (if the server is running on port 8000)
 
 ## Contribution
 
