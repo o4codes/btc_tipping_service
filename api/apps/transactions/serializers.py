@@ -154,15 +154,15 @@ class LightningTransactionSerializer(serializers.ModelSerializer):
         
         try:
             lightning_handler = BtcLighteningHandler()
-            lightning_handler.pay_lightning_address(payment_object) # perform lightning payment
-            response = payment_object.to_response_payload()
+            response = lightning_handler.pay_lightning_address(payment_object) # perform lightning payment
+            # response = payment_object.to_response_payload()
             
             lightening_transaction = LightningTransaction.objects.create(
                 btc = validated_data["btc"],
                 satoshis = response["satoshis"],
                 reference = response["reference"],
                 sender = self.context["request"].user,
-                lnAdress = response["lnAddress"],
+                lnAddress = response["lnAddress"],
                 status = response["status"],
                 bitnob_id = response["id"],
                 description = validated_data["description"]

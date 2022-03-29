@@ -37,24 +37,30 @@ class OnChainTransactionTest(APITestCase):
         )
         self.transaction.save()
 
-    def test_valid_address(self):
+    @patch("api.utils.bitnob_onchain_handler.BtcOnChainHandler.verify_address")
+    def test_valid_address(self, mock_verify_address):
         """ Test for valid address
         """
         
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         
+        mock_verify_address.return_value = True
+        
         test_address = "2N3oefVeg6stiTb5Kh3ozCSkaqmx91FDbsm"
         response = client.get(f"/api/v1/btc/onchain/validate/{test_address}")
         assert response.status_code == 200
         assert response.json()['status'] == True
-        
-    def test_invalid_address(self):
+    
+    @patch("api.utils.bitnob_onchain_handler.BtcOnChainHandler.verify_address")
+    def test_invalid_address(self, mock_verify_address):
         """ Test for invalid address
         """
         
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+        
+        mock_verify_address.side_effect = ValueError("Invalid address")
         
         test_address = "123rt"
         response = client.get(f"/api/v1/btc/onchain/validate/{test_address}")
@@ -132,8 +138,9 @@ class OnChainTransactionTest(APITestCase):
         
         response = client.post(f"/api/v1/btc/onchain", data=request_data, format="json")
         assert response.status_code == 401
-        
-    def test_payment_invalid_address(self):
+    
+    @patch("api.utils.bitnob_onchain_handler.BtcOnChainHandler.verify_address")
+    def test_payment_invalid_address(self, mock_verify_address):
         """ test for payment success
         """
         client = APIClient()
@@ -144,6 +151,8 @@ class OnChainTransactionTest(APITestCase):
             "receiving_address": "123rt",
             "description": "test payment"
         }
+        
+        mock_verify_address.side_effect = ValueError("Invalid address")
         
         response = client.post(f"/api/v1/btc/onchain", data=request_data, format="json")
         assert response.status_code == 400

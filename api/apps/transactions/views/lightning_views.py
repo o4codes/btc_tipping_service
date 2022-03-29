@@ -107,43 +107,19 @@ def receiver_confirm_btc(request, txid, address):
     """
     try:
         transaction = LightningTransaction.objects.get(sec_id=txid, lnAddress=address)
-        
-        if transaction.status == "pending":
-            bitnob_lightening = BtcLighteningHandler()
-            response = bitnob_lightening.get_transaction_data(transaction.bitnob_id)
-            transaction.status = response["status"]
-            transaction.is_received = True
-            transaction.save()
-        
-            data = {
-                "message": "BTC payment confirmed",
-            }
-            return Response(
-                schemas.ResponseData.success(data), status=status.HTTP_200_OK
-            )
-            
-        elif transaction.status == "success":
-            if transaction.is_received != True:
+        if transaction.is_received == False:
+            if transaction.status == "success":
                 transaction.is_received = True
                 transaction.save()
-                
-                data = {"message": "BTC payment confirmed"}
-                
                 return Response(
-                    schemas.ResponseData.success(data), status=status.HTTP_200_OK
+                    schemas.ResponseData.success({"message":"Transaction confirmed"}), status=status.HTTP_200_OK
                 )
-            
-            data = {"message": "BTC payment already confirmed"}
                 
-            return Response(
-                schemas.ResponseData.success(data), status=status.HTTP_200_OK
-            )
+            raise Exception("Cannot confirm transaction. Transaction status is not success.") 
             
-        else:
-            data = {"message": "BTC payment failed"}
-            return Response(
-                schemas.ResponseData.success(data), status=status.HTTP_200_OK
-            )
+        return Response(
+            schemas.ResponseData.success({"message":"Transaction already confirmed"}), status=status.HTTP_200_OK
+        )
     
     except LightningTransaction.DoesNotExist as e:
         return Response(

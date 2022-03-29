@@ -106,7 +106,13 @@ class BtcLightningPayment:
         self.__satoshis = btc_amount * 100000000
         self.__id = None
         self.__reference = str(uuid4())
-   
+    
+    def set_id(self, id: str) -> None:
+        """Set id for lightning btc payment
+        """
+        self.__id = id
+        
+        
     def to_request_payload(self) -> dict:
         """ Request of all requests
         """
@@ -119,7 +125,21 @@ class BtcLightningPayment:
      
     def to_response_payload(self) -> dict:
         """ Response of all requests
+        
+        Returns:
+            dict: response payload
+            sample: {
+                "id": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                "reference": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                "btcAmount": "0.000000001",
+                'satoshis': 100000000,
+                "senderEmail": "mail@mail.com",
+                "description": "description",
+                "lnAddress": "ln_address",
+                "status": "pending",
+            }
         """
+        
         return {
             "id": self.__id,
             "reference": self.__reference,

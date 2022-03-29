@@ -77,7 +77,8 @@ class BtcLighteningHandler(BitnobBase):
                 if data['data']['status'] == "ERROR":
                     raise Exception(data['data']['message'])
                 
-                return data['data']
+                lightning_payment.set_id(data['data']['id'])
+                return lightning_payment.to_response_payload()
             
             raise Exception(f"{data['message']}")
         except (HTTPError, ConnectionError) as e:

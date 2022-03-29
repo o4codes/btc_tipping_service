@@ -59,7 +59,7 @@ urlpatterns = [
     ),
     
     path(
-        "btc/lightning/confirm/<str:txid>",
+        "btc/lightning/transactions/<str:txid>/address/<str:address>",
         receiver_confirm_btc,
         name="confirm btc transaction"
          
